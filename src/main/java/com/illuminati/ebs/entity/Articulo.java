@@ -1,0 +1,44 @@
+package com.illuminati.ebs.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.List;
+
+@Entity
+@Table(name = "Articulo")
+@AttributeOverride(name = "id", column = @Column(name = "idArticulo"))
+@Data
+public class Articulo extends Base {
+
+    @Column(name = "denominacion")
+    private String denominacion;
+
+    @Column(name = "precio_compra")
+    private Double precioCompra;
+
+    @Column(name = "precio_venta")
+    private Double precioVenta;
+
+    @Column(name = "stock_minimo")
+    private Integer stockMinimo;
+
+    @Column(name = "stock_actual")
+    private Integer stockActual;
+
+    @Column(name = "es_insumo")
+    private Boolean esInsumo;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallePedido> detallesPedido;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoManufacturado> productosManufacturados;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rubro> rubros;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_unidad_medida")
+    private UnidadMedida unidadMedida;
+}
