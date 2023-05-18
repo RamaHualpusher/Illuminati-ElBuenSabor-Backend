@@ -11,38 +11,33 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_pedido"))
 @Data
 public class Pedido extends  Base{
-    @ManyToOne
-    @JoinColumn(name = "id_estado_pedido", insertable = false, updatable = false)
+    @OneToOne
     private EstadoPedido estadoPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_entrega_pedido", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_tipo_entrega_pedido")
     private TipoEntregaPedido tipoEntregaPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_pago", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_tipo_pago")
     private TipoPago tipoPago;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    /*@OneToOne
-    @JoinColumn(name = "idDomicilio", insertable = false, updatable = false)
-    private Domicilio domicilio;*/
+    @Column(name = "numero_orden")
+    private Integer numeroOrden;
 
-    /*@OneToMany(mappedBy = "Pedido")
-    private List<DetallePedido> detallePedidos;*/
+    @Column(name="hora_estimada_fin")
+    private Date horaEstimadaFin;
 
-    @Column
-    private Integer numero_orden;
+    @Column(name = "tipo_envio")
+    private String tipoEnvio;
 
-    @Column
-    private Date hora_estimada_fin;
-
-    @Column
-    private String tipo_envio;
-
-    @Column
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha")
     private Date fecha;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallePedido> detallesPedidos;
 }

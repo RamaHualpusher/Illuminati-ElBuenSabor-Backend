@@ -13,12 +13,12 @@ public class Domicilio extends Base{
     @OneToMany(mappedBy = "domicilio")
     private List<Usuario> usuarios;
 
-    @Column
+    @Column(name = "calle")
     private String calle;
 
-    @Column
+    @Column(name = "numero")
     private Integer numero;
 
-    @Column
+    @Column(name = "localidad")
     private String localidad;
 }

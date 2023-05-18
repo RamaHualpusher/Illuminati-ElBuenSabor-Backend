@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 public class UnidadMedida extends Base{
     @Column(name = "denominacion")
-    String denominacion;
+    private String denominacion;
 
-    @OneToMany(mappedBy = "unidadMedida", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Articulo> articulos;
+    @OneToOne(mappedBy = "unidadMedida")
+    private Articulo articulos;
 }

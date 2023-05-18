@@ -11,16 +11,16 @@ import java.util.List;
 @Data
 public class Rubro extends Base{
     @Column(name = "nombre")
-    String nombre;
+    private String nombre;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_rubro_padre")
-    Rubro rubroPadre;
+    private Rubro rubroPadre;
     @OneToMany(mappedBy = "rubroPadre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Rubro> rubrosHijos;
+    private List<Rubro> rubrosHijos;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_articulo")
-    Articulo articulo;
+    private Articulo articulo;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_ingrediente")
-    Ingrediente ingrediente;
+    private Ingrediente ingrediente;
 }

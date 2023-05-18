@@ -14,26 +14,25 @@ public class Usuario extends Base{
     @JoinColumn(name = "id_domicilio", insertable = false, updatable = false)
     private Domicilio domicilio;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <Pedido> pedidos;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rol", insertable = false, updatable = false)
+    @OneToOne
     private Rol rol;
 
-    @Column
+    @Column(name="nombre")
     private String nombre;
 
-    @Column
+    @Column(name="apellido")
     private String apellido;
 
-    @Column
+    @Column(name="email")
     private String email;
 
-    @Column
+    @Column(name="clave")
     private String clave;
 
-    @Column
+    @Column(name="telefono")
     private String telefono;
 
 }

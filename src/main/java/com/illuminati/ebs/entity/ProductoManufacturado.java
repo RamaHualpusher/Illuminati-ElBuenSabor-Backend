@@ -10,35 +10,35 @@ import java.util.List;
 @Data
 public class ProductoManufacturado extends Base{
     @Column(name = "nombre")
-    String nombre;
+    private String nombre;
     @Column(name = "tiempo_estimado_cocina")
-    Integer tiempoEstimadoCocina;
+    private Integer tiempoEstimadoCocina;
     @Column(name = "denominacion")
-    String denominacion;
+    private String denominacion;
     @Column(name = "imagen")
-    String imagen;
+    private String imagen;
     @Column(name = "stock_minimo")
-    Integer stockMinimo;
+    private Integer stockMinimo;
     @Column(name = "stock_actual")
-    Integer stockActual;
+    private Integer stockActual;
     @Column(name = "preparacion")
-    String preparacion;
+    private String preparacion;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_articulo")
-    Articulo articulo;
+    private Articulo articulo;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
             , mappedBy = "productosManufacturados"
             ,targetEntity = Ingrediente.class
     )
-    List<Ingrediente> ingredientes;
+    private List<Ingrediente> ingredientes;
 
     @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<ProductoManufacturadoVenta> productosManufacturadosVenta;
+    private List<ProductoManufacturadoVenta> productosManufacturadosVenta;
 
     @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<ProductoManufacturadoCosto> productosManufacturadosCosto;
+    private List<ProductoManufacturadoCosto> productosManufacturadosCosto;
 
 
 }

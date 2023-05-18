@@ -6,16 +6,18 @@ import lombok.Data;
 import java.util.Date;
 
 @Entity
-@Table(name = "IngredienteCosto")
-@AttributeOverride(name = "id", column = @Column(name = "id_ingrediente_costo"))
+@Table(name = "ProductoBebidaCosto")
+@AttributeOverride(name = "id", column = @Column(name = "id_producto_bebida_costo"))
 @Data
-public class IngredienteCosto extends Base{
+public class ProductoBebidaCosto  extends Base {
     @Column(name = "costo")
     private Double costo;
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha")
     private Date fecha;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_ingrediente")
-    private Ingrediente ingrediente;
+    @JoinColumn(name = "id_producto_bebida")
+    private ProductoBebida productoBebida;
+
+
 }

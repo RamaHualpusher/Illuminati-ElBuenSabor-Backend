@@ -10,8 +10,8 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_estado_pedido"))
 @Data
 public class EstadoPedido extends Base{
-    @OneToMany(mappedBy = "estadoPedido")
-    private List<Pedido> pedidos;
+    @OneToOne(mappedBy = "estadoPedido")
+    private Pedido pedido;
 
     @Column
     private String descripcion;

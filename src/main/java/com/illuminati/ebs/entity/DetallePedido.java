@@ -9,10 +9,13 @@ import lombok.Data;
 @Data
 public class DetallePedido extends Base{
     @Column(name = "cantidad")
-    Integer cantidad;
+    private Integer cantidad;
     @Column(name = "subtotal")
-    Double subtotal;
+    private Double subtotal;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_articulo")
-    Articulo articulo;
+    private Articulo articulo;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 }

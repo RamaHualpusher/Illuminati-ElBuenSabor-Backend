@@ -10,11 +10,12 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_tipo_pago"))
 @Data
 public class TipoPago extends Base{
-    @OneToMany(mappedBy = "tipoPago")
+    @OneToMany(mappedBy = "tipoPago", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
-    @Column
+    @OneToOne
+    MercadoPagoDatos mercadoPagoDatos;
+
+    @Column(name="descripcion")
     private String descripcion;
 }
-
-//ACA FALTA LA RELACION DE MERCADOPAGO

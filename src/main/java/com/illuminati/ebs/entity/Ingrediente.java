@@ -11,19 +11,19 @@ import java.util.List;
 @Data
 public class Ingrediente extends Base{
     @Column(name = "nombre")
-    String nombre;
+    private String nombre;
     @Column(name = "estado")
-    Boolean estado;
+    private Boolean estado;
     @Column(name = "stock_minimo")
-    Integer stockMinimo;
+    private Integer stockMinimo;
     @Column(name = "stock_actual")
-    Integer stockActual;
+    private Integer stockActual;
     @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Rubro> rubros;
+    private List<Rubro> rubros;
     @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<IngredienteCosto> ingredientesCosto;
+    private List<IngredienteCosto> ingredientesCosto;
     @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<IngredienteStockActual> ingredientesStockActual;
+    private List<IngredienteStockActual> ingredientesStockActual;
 
     @ManyToMany(
             fetch=FetchType.LAZY,
@@ -31,9 +31,9 @@ public class Ingrediente extends Base{
             cascade=CascadeType.ALL
     )
     @JoinTable(
-            name="producto_manufacturado_ingrediente",
+            name="ProductoManufacturado_Ingrediente",
             joinColumns=@JoinColumn(name="id_ingrediente"),
             inverseJoinColumns=@JoinColumn(name="id_producto_manufacturado")
     )
-    List<ProductoManufacturado> productosManufacturados;
+    private List<ProductoManufacturado> productosManufacturados;
 }

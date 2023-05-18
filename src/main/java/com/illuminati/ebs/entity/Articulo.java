@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Articulo")
-@AttributeOverride(name = "id", column = @Column(name = "idArticulo"))
+@AttributeOverride(name = "id", column = @Column(name = "id_articulo"))
 @Data
 public class Articulo extends Base {
 
@@ -38,7 +38,9 @@ public class Articulo extends Base {
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rubro> rubros;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_unidad_medida")
+    @OneToOne
     private UnidadMedida unidadMedida;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoBebida> productosBebidas;
 }

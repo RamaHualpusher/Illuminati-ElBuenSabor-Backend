@@ -11,13 +11,13 @@ import java.util.Date;
 @Data
 public class ProductoManufacturadoVenta extends Base{
     @Column(name = "precio_venta")
-    Double precioVenta;
+    private Double precioVenta;
     @Column(name = "cantidad")
-    Integer cantidad;
+    private Integer cantidad;
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha")
-    Date fecha;
+    private Date fecha;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_producto_manufacturado")
-    ProductoManufacturado productoManufacturado;
+    private ProductoManufacturado productoManufacturado;
 }
