@@ -14,5 +14,5 @@ public class UnidadMedida extends Base{
     private String denominacion;
 
     @OneToOne(mappedBy = "unidadMedida")
-    private Articulo articulos;
+    private Articulo articulo;
 }

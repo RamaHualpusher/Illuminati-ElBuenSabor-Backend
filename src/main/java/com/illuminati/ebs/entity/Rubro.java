@@ -23,4 +23,7 @@ public class Rubro extends Base{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_ingrediente")
     private Ingrediente ingrediente;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_producto_manufacturado")
+    private ProductoManufacturado productoManufacturado;
 }

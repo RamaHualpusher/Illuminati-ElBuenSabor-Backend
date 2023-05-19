@@ -24,10 +24,6 @@ public class ProductoManufacturado extends Base{
     @Column(name = "preparacion")
     private String preparacion;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_articulo")
-    private Articulo articulo;
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
             , mappedBy = "productosManufacturados"
             ,targetEntity = Ingrediente.class
@@ -40,5 +36,7 @@ public class ProductoManufacturado extends Base{
     @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductoManufacturadoCosto> productosManufacturadosCosto;
 
+    @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rubro> rubros;
 
 }
