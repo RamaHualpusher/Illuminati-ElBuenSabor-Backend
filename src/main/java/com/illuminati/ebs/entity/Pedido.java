@@ -38,6 +38,7 @@ public class Pedido extends  Base{
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha")
     private Date fecha;
+
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detallesPedidos;
 }

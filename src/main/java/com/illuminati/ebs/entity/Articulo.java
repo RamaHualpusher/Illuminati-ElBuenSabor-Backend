@@ -26,8 +26,8 @@ public class Articulo extends Base {
     @Column(name = "stock_actual")
     private Integer stockActual;
 
-    @Column(name = "es_insumo")
-    private Boolean esInsumo;
+    @Column(name = "es_bebida")
+    private Boolean esBebida;
 
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detallesPedido;
@@ -39,6 +39,6 @@ public class Articulo extends Base {
     @JoinColumn(name = "id_unidad_medida")
     private UnidadMedida unidadMedida;
 
-    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductoBebida> productosBebidas;
+    //@OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //private List<ProductoBebida> productosBebidas;
 }
