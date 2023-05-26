@@ -16,6 +16,6 @@ public class ProductoBebidaStockActual extends Base {
     @Column(name = "fecha")
     private Date fecha;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_producto_bebida")
-    private ProductoBebida productoBebida;
+    @JoinColumn(name = "id_articulo")
+    private Articulo articulo;
 }

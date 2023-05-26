@@ -17,13 +17,13 @@ public class Rubro extends Base{
     private Rubro rubroPadre;
     @OneToMany(mappedBy = "rubroPadre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rubro> rubrosHijos;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_articulo")
-    private Articulo articulo;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_ingrediente")
-    private Ingrediente ingrediente;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_producto_manufacturado")
-    private ProductoManufacturado productoManufacturado;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_articulo")
+    //private Articulo articulo;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_ingrediente")
+    //private Ingrediente ingrediente;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_producto_manufacturado")
+    //private ProductoManufacturado productoManufacturado;
 }

@@ -13,6 +13,6 @@ public class UnidadMedida extends Base{
     @Column(name = "denominacion")
     private String denominacion;
 
-    @OneToOne(mappedBy = "unidadMedida")
-    private Articulo articulo;
+    //@OneToOne(mappedBy = "unidadMedida")
+    //private Articulo articulo;
 }

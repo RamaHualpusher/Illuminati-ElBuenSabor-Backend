@@ -39,6 +39,12 @@ public class Articulo extends Base {
     @JoinColumn(name = "id_unidad_medida")
     private UnidadMedida unidadMedida;
 
-    //@OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //private List<ProductoBebida> productosBebidas;
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoBebidaCosto> productosBebidasCosto;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoBebidaVenta> productosBebidasVenta;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoBebidaStockActual> productosBebidasStockActual;
 }

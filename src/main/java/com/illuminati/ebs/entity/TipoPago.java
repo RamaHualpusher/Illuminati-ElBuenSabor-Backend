@@ -10,8 +10,8 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_tipo_pago"))
 @Data
 public class TipoPago extends Base{
-    @OneToMany(mappedBy = "tipoPago", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Pedido> pedidos;
+    //@OneToMany(mappedBy = "tipoPago", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //private List<Pedido> pedidos;
 
     @OneToOne
     MercadoPagoDatos mercadoPagoDatos;
