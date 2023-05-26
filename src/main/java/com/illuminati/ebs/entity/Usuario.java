@@ -20,17 +20,14 @@ public class Usuario extends Base{
     @OneToOne
     private Rol rol;
 
+    @OneToOne
+    private UserAuth userAuth;
+
     @Column(name="nombre")
     private String nombre;
 
     @Column(name="apellido")
     private String apellido;
-
-    @Column(name="email")
-    private String email;
-
-    @Column(name="clave")
-    private String clave;
 
     @Column(name="telefono")
     private String telefono;

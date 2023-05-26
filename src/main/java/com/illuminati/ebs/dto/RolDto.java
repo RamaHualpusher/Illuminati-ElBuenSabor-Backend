@@ -5,4 +5,5 @@ import lombok.Data;
 public class RolDto {
     private Long idRol;
     private String nombreRol;
+    private UsuarioDto usuario;
 }
