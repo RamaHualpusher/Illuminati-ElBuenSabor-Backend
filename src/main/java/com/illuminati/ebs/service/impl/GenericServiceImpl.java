@@ -1,8 +1,9 @@
-package com.illuminati.ebs.service;
+package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.entity.Base;
 import com.illuminati.ebs.mapper.GenericMapper;
 import com.illuminati.ebs.repository.GenericRepository;
+import com.illuminati.ebs.service.GenericService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;

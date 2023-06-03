@@ -1,9 +1,10 @@
-package com.illuminati.ebs.service;
+package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.ExampleDto;
 import com.illuminati.ebs.entity.ExampleEntity;
 import com.illuminati.ebs.mapper.ExampleMapper;
 import com.illuminati.ebs.repository.ExampleRepository;
+import com.illuminati.ebs.service.ExampleService;
 import org.springframework.stereotype.Service;
 
 @Service
