@@ -21,22 +21,24 @@ public class ProductoManufacturado extends Base{
     private Integer stockMinimo;
     @Column(name = "stock_actual")
     private Integer stockActual;
-    @Column(name = "preparacion")
+    @Column(name = "preparacion", length = 1000)
     private String preparacion;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-            , mappedBy = "productosManufacturados"
-            ,targetEntity = Ingrediente.class
-    )
-    private List<Ingrediente> ingredientes;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_rubro")
+    private Rubro rubro;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_producto_manufacturado")
+    private List<DetallePedido> detallePedidos;
+
+    @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductoManufacturado_Ingrediente> productosManufacturadosIngredientes;
 
     @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductoManufacturadoVenta> productosManufacturadosVenta;
 
     @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductoManufacturadoCosto> productosManufacturadosCosto;
-
-    @OneToMany(mappedBy = "productoManufacturado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Rubro> rubros;
 
 }
