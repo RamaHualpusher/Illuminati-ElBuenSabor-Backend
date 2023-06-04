@@ -10,7 +10,7 @@ import com.illuminati.ebs.dto.*;
 
 
 @Component
-public class ArticuloMapper {
+public class ArticuloMapper implements GenericMapper<ArticuloDto, Articulo>{
 
     @Autowired
     private RubroRepository rubroRepository;
