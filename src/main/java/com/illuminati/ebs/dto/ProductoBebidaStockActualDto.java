@@ -8,5 +8,5 @@ public class ProductoBebidaStockActualDto {
     private Long idProductoBebidaStockActual;
     private Integer stockActual;
     private Date fecha;
-    private ProductoBebidaDto productoBebida;
+    private Long idArticulo;
 }

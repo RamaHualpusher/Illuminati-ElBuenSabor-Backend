@@ -8,12 +8,12 @@ import java.util.List;
 public class PedidoDto {
     private Long idPedido;
     private Integer numeroPedido;
-    private Date fechaPedido;
     private Date horaEstimadaFin;
     private String tipoEnvio;
-    private TipoEntregaPedidoDto tipoEntregaPedido;
-    private EstadoPedidoDto estadoPedido;
-    private TipoPagoDto tipoPago;
-    private UsuarioDto usuario;
-    private ArticuloDto articulo;
+    private Date fecha;
+    private Long idEstadoPedido;
+    private Long idTipoEntregaPedido;
+    private Long idTipoPago;
+    private Long idUsuario;
+    private List<Long> detallesPedidosIds;
 }

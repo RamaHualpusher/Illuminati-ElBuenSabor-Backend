@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class EstadoPedidoDto {
-    private Long idOrderStatus;
+    private Long idEstadoPedido;
     private String descripcion;
     private String tiempo;
 }

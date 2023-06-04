@@ -10,8 +10,12 @@ public class ProductoManufacturadoDto {
     private Integer tiempoEstimadoCocina;
     private String denominacion;
     private String imagen;
-    private Integer stockActual;
     private Integer stockMinimo;
+    private Integer stockActual;
     private String preparacion;
-    private List<IngredienteDto> ingredientes;
+    private Long idRubro;
+    private List<Long> detallePedidosIds;
+    private List<Long> productosManufacturadosIngredientesIds;
+    private List<Long> productosManufacturadosVentaIds;
+    private List<Long> productosManufacturadosCostoIds;
 }

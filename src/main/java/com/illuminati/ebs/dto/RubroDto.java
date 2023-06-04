@@ -1,12 +1,15 @@
 package com.illuminati.ebs.dto;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RubroDto {
     private Long idRubro;
     private String nombre;
-    private ArticuloDto articulo;
-    private IngredienteDto ingrediente;
-    private RubroDto rubroPadre;
-    private ProductoManufacturadoDto productoManufacturado;
+    private Long idRubroPadre;
+    private List<Long> rubrosHijosIds;
+    private List<Long> articulosIds;
+    private List<Long> ingredientesIds;
+    private List<Long> productoManufacturadoIds;
 }

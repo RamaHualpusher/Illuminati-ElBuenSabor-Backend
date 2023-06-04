@@ -7,7 +7,7 @@ import java.util.Date;
 public class ProductoBebidaVentaDto {
     private Long idProductoBebidaVenta;
     private Integer cantidad;
-    private Date fecha;
-    private ProductoBebidaDto productoBebida;
     private Double precioVenta;
+    private Date fecha;
+    private Long idArticulo;
 }

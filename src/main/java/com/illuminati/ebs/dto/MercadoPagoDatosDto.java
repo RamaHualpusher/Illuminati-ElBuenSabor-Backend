@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Data
 public class MercadoPagoDatosDto {
-    private Long idMercadoPagoData;
+    private Long idMercadoPagoDatos;
     private Integer identificadorPago;
     private Date fechaCreacion;
     private Date fechaAprobacion;

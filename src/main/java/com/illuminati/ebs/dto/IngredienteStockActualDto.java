@@ -5,8 +5,8 @@ import java.util.Date;
 
 @Data
 public class IngredienteStockActualDto {
-    private Long idIngredientesActual;
+    private Long idIngredienteStockActual;
     private Integer stockActual;
     private Date fecha;
-    private IngredienteDto ingrediente;
+    private Long idIngrediente;
 }
