@@ -2,9 +2,11 @@ package com.illuminati.ebs.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "UnidadMedida")
 @AttributeOverride(name = "id", column = @Column(name = "id_unidad_medida"))

@@ -1,78 +1,74 @@
 package com.illuminati.ebs.mapper;
-
 import com.illuminati.ebs.dto.ArticuloDto;
 import com.illuminati.ebs.entity.Articulo;
+import com.illuminati.ebs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.stream.Collectors;
+import com.illuminati.ebs.entity.*;
+import com.illuminati.ebs.dto.*;
+
 
 @Component
-public class ArticuloMapper implements GenericMapper<ArticuloDto, Articulo> {
+public class ArticuloMapper {
 
     @Autowired
-    private RubroMapper rubroMapper;
+    private RubroRepository rubroRepository;
 
     @Autowired
-    private UnidadMedidaMapper unidadMedidaMapper;
+    private UnidadMedidaRepository unidadMedidaRepository;
 
-    @Autowired
-    private DetallePedidoMapper detallePedidoMapper;
-
-    @Autowired
-    private ProductoBebidaCostoMapper productoBebidaCostoMapper;
-
-    @Autowired
-    private ProductoBebidaVentaMapper productoBebidaVentaMapper;
-
-    @Autowired
-    private ProductoBebidaStockActualMapper productoBebidaStockActualMapper;
-
-    @Override
-    public Articulo toEntity(ArticuloDto dto) {
-        Articulo entity = new Articulo();
-        entity.setId(dto.getIdArticulo());
-        entity.setDenominacion(dto.getDenominacion());
-        entity.setPrecioCompra(dto.getPrecioCompra());
-        entity.setPrecioVenta(dto.getPrecioVenta());
-        entity.setStockMinimo(dto.getStockMinimo());
-        entity.setStockActual(dto.getStockActual());
-        entity.setEsBebida(dto.getEsBebida());
-
-        // Convertir idRubro y idUnidadMedida a entidades correspondientes
-        entity.setRubro(rubroMapper.toEntity(dto.getIdRubro()));
-        entity.setUnidadMedida(unidadMedidaMapper.toEntity(dto.getIdUnidadMedida()));
-
-        // Convertir las listas de IDs a listas de entidades anidadas
-        entity.setDetallesPedido(detallePedidoMapper.toEntityList(dto.getDetallesPedidoIds()));
-        entity.setProductosBebidasCosto(productoBebidaCostoMapper.toEntityList(dto.getProductosBebidasCostoIds()));
-        entity.setProductosBebidasVenta(productoBebidaVentaMapper.toEntityList(dto.getProductosBebidasVentaIds()));
-        entity.setProductosBebidasStockActual(productoBebidaStockActualMapper.toEntityList(dto.getProductosBebidasStockActualIds()));
-
-        return entity;
-    }
-
-    @Override
-    public ArticuloDto toDto(Articulo entity) {
+    public ArticuloDto toDto(Articulo articulo) {
         ArticuloDto dto = new ArticuloDto();
-        dto.setIdArticulo(entity.getId());
-        dto.setDenominacion(entity.getDenominacion());
-        dto.setPrecioCompra(entity.getPrecioCompra());
-        dto.setPrecioVenta(entity.getPrecioVenta());
-        dto.setStockMinimo(entity.getStockMinimo());
-        dto.setStockActual(entity.getStockActual());
-        dto.setEsBebida(entity.getEsBebida());
+        dto.setIdArticulo(articulo.getId());
+        dto.setDenominacion(articulo.getDenominacion());
+        dto.setPrecioCompra(articulo.getPrecioCompra());
+        dto.setPrecioVenta(articulo.getPrecioVenta());
+        dto.setStockMinimo(articulo.getStockMinimo());
+        dto.setStockActual(articulo.getStockActual());
+        dto.setEsBebida(articulo.getEsBebida());
+        dto.setIdRubro(articulo.getRubro().getId());
+        dto.setIdUnidadMedida(articulo.getUnidadMedida().getId());
 
-        // Convertir entidades anidadas a IDs
-        dto.setIdRubro(entity.getRubro().getId());
-        dto.setIdUnidadMedida(entity.getUnidadMedida().getId());
+        dto.setDetallesPedidoIds(articulo.getDetallesPedido().stream()
+                .map(DetallePedido::getId)
+                .collect(Collectors.toList()));
 
-        // Convertir las listas de entidades anidadas a listas de IDs
-        dto.setDetallesPedidoIds(detallePedidoMapper.toDtoList(entity.getDetallesPedido()).stream().map(DetallePedidoDto::getIdDetallePedido).collect(Collectors.toList()));
-        dto.setProductosBebidasCostoIds(productoBebidaCostoMapper.toDtoList(entity.getProductosBebidasCosto()).stream().map(ProductoBebidaCostoDto::getIdProductoBebidaCosto).collect(Collectors.toList()));
-        dto.setProductosBebidasVentaIds(productoBebidaVentaMapper.toDtoList(entity.getProductosBebidasVenta()).stream().map(ProductoBebidaVentaDto::getIdProductoBebidaVenta).collect(Collectors.toList()));
-        dto.setProductosBebidasStockActualIds(productoBebidaStockActualMapper.toDtoList(entity.getProductosBebidasStockActual()).stream().map(ProductoBebidaStockActualDto::getIdProductoBebidaStockActual).collect(Collectors.toList()));
+        dto.setProductosBebidasCostoIds(articulo.getProductosBebidasCosto().stream()
+                .map(ProductoBebidaCosto::getId)
+                .collect(Collectors.toList()));
+
+        dto.setProductosBebidasVentaIds(articulo.getProductosBebidasVenta().stream()
+                .map(ProductoBebidaVenta::getId)
+                .collect(Collectors.toList()));
+
+        dto.setProductosBebidasStockActualIds(articulo.getProductosBebidasStockActual().stream()
+                .map(ProductoBebidaStockActual::getId)
+                .collect(Collectors.toList()));
 
         return dto;
     }
+
+    public Articulo toEntity(ArticuloDto dto) {
+        Articulo articulo = new Articulo();
+        articulo.setId(dto.getIdArticulo());
+        articulo.setDenominacion(dto.getDenominacion());
+        articulo.setPrecioCompra(dto.getPrecioCompra());
+        articulo.setPrecioVenta(dto.getPrecioVenta());
+        articulo.setStockMinimo(dto.getStockMinimo());
+        articulo.setStockActual(dto.getStockActual());
+        articulo.setEsBebida(dto.getEsBebida());
+
+        Rubro rubro = rubroRepository.findById(dto.getIdRubro()).orElseThrow();
+        articulo.setRubro(rubro);
+
+        UnidadMedida unidadMedida = unidadMedidaRepository.findById(Math.toIntExact(dto.getIdUnidadMedida())).orElseThrow();
+        articulo.setUnidadMedida(unidadMedida);
+
+        // Las relaciones con DetallePedido, ProductoBebidaCosto, ProductoBebidaVenta y ProductoBebidaStockActual se administrarán en sus respectivos servicios
+
+        return articulo;
+    }
 }
+
+
