@@ -8,5 +8,5 @@ public class IngredienteCostoDto {
     private Long idIngredienteCosto;
     private Double costo;
     private Date fecha;
-    private Long idIngrediente;
+    private IngredienteDto ingrediente;
 }

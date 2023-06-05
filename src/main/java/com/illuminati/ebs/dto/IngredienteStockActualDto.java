@@ -8,5 +8,5 @@ public class IngredienteStockActualDto {
     private Long idIngredienteStockActual;
     private Integer stockActual;
     private Date fecha;
-    private Long idIngrediente;
+    private IngredienteDto ingrediente;
 }

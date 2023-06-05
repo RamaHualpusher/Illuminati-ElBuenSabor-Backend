@@ -4,5 +4,5 @@ import com.illuminati.ebs.entity.TipoPago;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TipoPagoRepository extends GenericRepository<TipoPago, Integer>{
+public interface TipoPagoRepository extends GenericRepository<TipoPago, Long>{
 }

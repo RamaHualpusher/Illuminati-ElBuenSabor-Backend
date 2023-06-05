@@ -11,9 +11,9 @@ public class PedidoDto {
     private Date horaEstimadaFin;
     private String tipoEnvio;
     private Date fecha;
-    private Long idEstadoPedido;
-    private Long idTipoEntregaPedido;
-    private Long idTipoPago;
-    private Long idUsuario;
-    private List<Long> detallesPedidosIds;
+    private EstadoPedidoDto estadoPedido;
+    private TipoEntregaPedidoDto tipoEntregaPedido;
+    private TipoPagoDto tipoPago;
+    private UsuarioDto usuario;
+    private List<DetallePedidoDto> detallesPedidos;
 }

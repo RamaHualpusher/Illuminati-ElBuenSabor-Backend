@@ -13,9 +13,9 @@ public class ProductoManufacturadoDto {
     private Integer stockMinimo;
     private Integer stockActual;
     private String preparacion;
-    private Long idRubro;
-    private List<Long> detallePedidosIds;
-    private List<Long> productosManufacturadosIngredientesIds;
-    private List<Long> productosManufacturadosVentaIds;
-    private List<Long> productosManufacturadosCostoIds;
+    private RubroDto rubro;
+    private List<DetallePedidoDto> detallePedidos;
+    private List<ProductoManufacturadoIngredienteDto> productosManufacturadosIngredientes;
+    private List<ProductoManufacturadoVentaDto> productosManufacturadosVenta;
+    private List<ProductoManufacturadoCostoDto> productosManufacturadosCosto;
 }

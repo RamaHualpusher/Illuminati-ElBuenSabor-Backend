@@ -8,7 +8,7 @@ public class UsuarioDto {
         private String apellido;
         private String email;
         private String telefono;
-        private Long idRol;
-        private Long idUserAuth;
+        private RolDto rol;
+        private UserAuthDto userAuth;
         // Agrega los campos adicionales según sea necesario
 }

@@ -1,14 +1,25 @@
 package com.illuminati.ebs.mapper;
 
 
+import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public interface GenericMapper<D, E> {
 
-    E toEntity(D dto);
+    ModelMapper modelMapper = new ModelMapper();
 
-    D toDto(E entity);
+    default E toEntity(D dto){
+        return modelMapper.map(dto, (Class<E>) ((java.lang.reflect.ParameterizedType) getClass()
+                .getGenericInterfaces()[0])
+                .getActualTypeArguments()[1]);
+    }
+
+    default D toDto(E entity){
+        return modelMapper.map(entity, (Class<D>) ((java.lang.reflect.ParameterizedType) getClass()
+                .getGenericInterfaces()[0])
+                .getActualTypeArguments()[0]);
+    }
 
     default List<E> toEntityList(List<D> dtos) {
         if (dtos == null) {
@@ -30,3 +41,4 @@ public interface GenericMapper<D, E> {
                 .collect(Collectors.toList());
     }
 }
+

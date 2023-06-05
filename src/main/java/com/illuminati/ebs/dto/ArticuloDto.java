@@ -12,10 +12,10 @@ public class ArticuloDto {
     private Integer stockMinimo;
     private Integer stockActual;
     private Boolean esBebida;
-    private Long idRubro;
-    private Long idUnidadMedida;
-    private List<Long> detallesPedidoIds;
-    private List<Long> productosBebidasCostoIds;
-    private List<Long> productosBebidasVentaIds;
-    private List<Long> productosBebidasStockActualIds;
+    private RubroDto rubro;
+    private UnidadMedidaDto unidadMedida;
+    private List<DetallePedidoDto> detallesPedido;
+    private List<ProductoBebidaCostoDto> productosBebidasCosto;
+    private List<ProductoBebidaVentaDto> productosBebidasVenta;
+    private List<ProductoBebidaStockActualDto> productosBebidasStockActual;
 }

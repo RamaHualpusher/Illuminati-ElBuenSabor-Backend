@@ -8,5 +8,5 @@ public class ProductoManufacturadoVentaDto {
     private Double precioVenta;
     private Integer cantidad;
     private Date fecha;
-    private Long idProductoManufacturado;
+    private ProductoManufacturadoDto productoManufacturado;
 }
