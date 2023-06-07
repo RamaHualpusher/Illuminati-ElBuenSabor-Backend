@@ -41,11 +41,11 @@ public class Articulo extends Base {
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductoBebidaStockActual> productosBebidasStockActual;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_unidad_medida")
     private UnidadMedida unidadMedida;
 }

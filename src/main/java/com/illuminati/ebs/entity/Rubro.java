@@ -13,19 +13,19 @@ public class Rubro extends Base{
     @Column(name = "nombre")
     private String nombre;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_rubro_padre")
     private Rubro rubroPadre;
 
-    @OneToMany(mappedBy = "rubroPadre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rubroPadre", fetch = FetchType.LAZY)
     private List<Rubro> rubrosHijos;
 
-    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY)
     private List<Articulo> articulos;
 
-    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY)
     private List<Ingrediente> ingredientes;
 
-    @OneToMany(mappedBy = "rubro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY)
     private List<ProductoManufacturado> productoManufacturado;
 }

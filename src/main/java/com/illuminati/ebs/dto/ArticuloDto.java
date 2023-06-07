@@ -12,10 +12,7 @@ public class ArticuloDto {
     private Integer stockMinimo;
     private Integer stockActual;
     private Boolean esBebida;
-    private RubroDto rubro;
-    private UnidadMedidaDto unidadMedida;
-    private List<DetallePedidoDto> detallesPedido;
-    private List<ProductoBebidaCostoDto> productosBebidasCosto;
-    private List<ProductoBebidaVentaDto> productosBebidasVenta;
-    private List<ProductoBebidaStockActualDto> productosBebidasStockActual;
+    private Long rubroId; // Cambio: ID del rubro existente
+    private Long unidadMedidaId; // Cambio: ID de la unidad de medida existente
+    // Eliminamos las listas relacionadas a ProductoBebidaVenta y otras que no se inicializarán en la creación del artículo
 }

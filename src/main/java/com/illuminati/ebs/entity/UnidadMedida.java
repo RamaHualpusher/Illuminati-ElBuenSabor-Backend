@@ -14,9 +14,9 @@ public class UnidadMedida extends Base{
     @Column(name = "denominacion")
     private String denominacion;
 
-    @OneToOne(mappedBy = "unidadMedida")
+    @OneToOne(mappedBy = "unidadMedida", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Articulo articulo;
 
-    @OneToOne(mappedBy = "unidadMedida")
+    @OneToOne(mappedBy = "unidadMedida", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Ingrediente ingrediente;
 }

@@ -1,11 +1,12 @@
 package com.illuminati.ebs.mapper;
 
 
+import com.illuminati.ebs.entity.Base;
 import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface GenericMapper<D, E> {
+public interface GenericMapper<D, E extends Base> {
 
     ModelMapper modelMapper = new ModelMapper();
 
