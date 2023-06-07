@@ -10,6 +10,7 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_ingrediente"))
 @Data
 public class Ingrediente extends Base{
+
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "estado")
@@ -19,19 +20,21 @@ public class Ingrediente extends Base{
     @Column(name = "stock_actual")
     private Integer stockActual;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
 
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<IngredienteCosto> ingredientesCosto;
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<IngredienteStockActual> ingredientesStockActual;
+
 
     @OneToOne
     @JoinColumn(name = "id_unidad_medida")
     private UnidadMedida unidadMedida;
 
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ingrediente", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductoManufacturado_Ingrediente> productosManufacturadosIngredientes;
 }

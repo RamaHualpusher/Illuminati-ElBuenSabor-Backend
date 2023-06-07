@@ -13,10 +13,9 @@ public class TipoPago extends Base{
     @OneToMany(mappedBy = "tipoPago", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
-    @OneToOne
-    @JoinColumn(name = "id_mercado_pago_datos")
-    MercadoPagoDatos mercadoPagoDatos;
+    @OneToOne(mappedBy = "tipoPago", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MercadoPagoDatos mercadoPagoDatos;
 
-    @Column(name="descripcion")
+    @Column(name = "descripcion")
     private String descripcion;
 }

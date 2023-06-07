@@ -26,6 +26,6 @@ public class Rubro extends Base{
     @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY)
     private List<Ingrediente> ingredientes;
 
-    @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "rubro", fetch = FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<ProductoManufacturado> productoManufacturado;
 }

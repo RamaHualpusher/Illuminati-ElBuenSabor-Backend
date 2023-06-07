@@ -10,12 +10,16 @@ import java.util.Date;
 @AttributeOverride(name = "id", column = @Column(name = "id_producto_bebida_stock_actual"))
 @Data
 public class ProductoBebidaStockActual extends Base {
+
     @Column(name = "stock_actual")
     private Integer stockActual;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha")
     private Date fecha;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_articulo")
+
+    @ManyToOne
+    @JoinColumn(name = "id_articulo", nullable = false)
     private Articulo articulo;
+
 }
