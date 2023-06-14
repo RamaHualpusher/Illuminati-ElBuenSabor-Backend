@@ -21,19 +21,30 @@ En resumen, el sistema de restaurante "El buen sabor" cuenta con diferentes inte
 - [@GonzaloLisanti](https://www.github.com/GonzaloLisanti)
 - [@JavierScan](https://www.github.com/JavierScan)
 
-##Ejecutar
+## Ejecutar
 
 -Clonar el repositorio
+
 -Se debe tener instalado el JDK 17 o superior de Java
+
 -Se deben colocar las variables de entorno necesarias en el SO, IDE o en el archivo de configuración application.properties:
+
 DB_HOST : db4free.net
+
 DB_PORT : 3306
+
 DB_NAME : el_buen_sabor
+
 DB_USER : illuminati
+
 DB_PASS : Password2023	
+
 -Tener instalado y ejecutando un servidor de MySQL 8 o superior
+
 -La ejecución se puede realizar usando Maven o directamente desde un IDE como IntelliJ Idea ya que el mismo automatizará la instalación de dependencias.
+
 -La BBDD está en un servidor cloud, por lo que no es necesario crearla en su equipo local.
+
 -El proyecto se levantá en el puerto 8080 usando el servidor Tomcat.
 
 
