@@ -21,7 +21,7 @@ En resumen, el sistema de restaurante "El buen sabor" cuenta con diferentes inte
 - [@GonzaloLisanti](https://www.github.com/GonzaloLisanti)
 - [@JavierScan](https://www.github.com/JavierScan)
 
-## Ejecutar
+## Ejecución
 
 -Clonar el repositorio
 
