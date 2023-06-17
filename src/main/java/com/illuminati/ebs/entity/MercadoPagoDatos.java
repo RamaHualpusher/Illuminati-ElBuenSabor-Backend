@@ -34,6 +34,6 @@ public class MercadoPagoDatos extends Base{
     private String estado;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_pago")
-    private TipoPago tipoPago;
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 }

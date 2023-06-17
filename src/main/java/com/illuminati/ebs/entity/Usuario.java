@@ -19,13 +19,16 @@ public class Usuario extends Base{
     @Column(name="email")
     private String email;
 
+    @Column(name="clave")
+    private String clave;
+
     @Column(name="telefono")
     private String telefono;
 
-    //La clave no se guarda en la base de datos
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Domicilio> domicilios;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_domicilio")
+    private Domicilio domicilio;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <Pedido> pedidos;
@@ -33,9 +36,5 @@ public class Usuario extends Base{
     @OneToOne
     @JoinColumn(name = "id_rol")
     private Rol rol;
-
-    @OneToOne
-    @JoinColumn(name = "id_user_auth")
-    private UserAuth userAuth;
 
 }

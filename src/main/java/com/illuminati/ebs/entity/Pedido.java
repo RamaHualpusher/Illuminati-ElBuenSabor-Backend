@@ -20,21 +20,21 @@ public class Pedido extends  Base{
     @Column(name = "tipo_envio")
     private String tipoEnvio;
 
+    @Column(name = "es_delivery")
+    private boolean esDelivery;
+
+    @Column(name = "es_efectivo")
+    private boolean esEfectivo;
+
+    @Column(name = "estado_pedido")
+    private String estadoPedido;
+
     @Temporal(TemporalType.DATE)
-    @Column(name = "fecha")
-    private Date fecha;
+    @Column(name = "fecha_pedido")
+    private Date fechaPedido;
 
-    @OneToOne
-    @JoinColumn(name = "id_estado_pedido")
-    private EstadoPedido estadoPedido;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_tipo_entrega_pedido")
-    private TipoEntregaPedido tipoEntregaPedido;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_tipo_pago")
-    private TipoPago tipoPago;
+    @Transient
+    private Double total;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario")
@@ -42,4 +42,14 @@ public class Pedido extends  Base{
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detallesPedidos;
+
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MercadoPagoDatos mercadoPagoDatos;
+    public Double getTotal() {
+        Double total = 0.0;
+        for (DetallePedido detallePedido : detallesPedidos) {
+            total += detallePedido.getSubtotal();
+        }
+        return total;
+    }
 }

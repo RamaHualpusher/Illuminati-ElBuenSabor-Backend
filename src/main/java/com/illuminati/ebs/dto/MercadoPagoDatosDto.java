@@ -1,4 +1,5 @@
 package com.illuminati.ebs.dto;
+import com.illuminati.ebs.entity.Pedido;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,4 +14,5 @@ public class MercadoPagoDatosDto {
     private String metodoPago;
     private String numTarjeta;
     private String estado;
+    private PedidoDto pedido;
 }

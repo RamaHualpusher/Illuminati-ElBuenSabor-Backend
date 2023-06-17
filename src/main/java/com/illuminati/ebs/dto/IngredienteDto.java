@@ -10,9 +10,7 @@ public class IngredienteDto {
     private Boolean estado;
     private Integer stockMinimo;
     private Integer stockActual;
+    private String unidadMedida;
     private RubroDto rubro;
-    private List<IngredienteCostoDto> ingredientesCosto;
-    private List<IngredienteStockActualDto> ingredientesStockActual;
-    private UnidadMedidaDto unidadMedida;
-    private List<ProductoManufacturadoIngredienteDto> productosManufacturadosIngredientes;
+    private List<ProductoIngredienteDto> productosIngredientes;
 }

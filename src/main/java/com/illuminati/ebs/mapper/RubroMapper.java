@@ -1,29 +1,50 @@
+// RubroMapper.java
 package com.illuminati.ebs.mapper;
 
 import com.illuminati.ebs.dto.RubroDto;
 import com.illuminati.ebs.entity.Rubro;
+import jakarta.annotation.PostConstruct;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class RubroMapper implements GenericMapper<RubroDto, Rubro> {
 
-    @Override
-    public Rubro toEntity(RubroDto dto) {
-        Rubro entity = new Rubro();
-        entity.setId(dto.getIdRubro());
-        entity.setNombre(dto.getNombre());
-        // Asigna los valores restantes...
+    private TypeMap<Rubro, RubroDto> toDtoTypeMap;
+    private TypeMap<RubroDto, Rubro> toEntityTypeMap;
 
-        return entity;
+    @PostConstruct
+    public void initializeTypeMaps() {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        toDtoTypeMap = modelMapper.createTypeMap(Rubro.class, RubroDto.class);
+        toEntityTypeMap = modelMapper.createTypeMap(RubroDto.class, Rubro.class);
+
+        toDtoTypeMap.addMappings(mapper -> mapper.map(Rubro::getId, RubroDto::setIdRubro));
+        toEntityTypeMap.addMappings(mapper -> mapper.map(RubroDto::getIdRubro, Rubro::setId));
+
+        toDtoTypeMap.addMappings(mapper -> mapper.skip(RubroDto::setRubroPadre));
+        toEntityTypeMap.addMappings(mapper -> mapper.skip(Rubro::setRubroPadre));
     }
 
     @Override
     public RubroDto toDto(Rubro entity) {
-        RubroDto dto = new RubroDto();
-        dto.setIdRubro(entity.getId());
-        dto.setNombre(entity.getNombre());
-        // Asigna los valores restantes...
+        RubroDto rubroDto = toDtoTypeMap.map(entity);
+        if (entity.getRubroPadre() != null) {
+            rubroDto.setRubroPadre(toDto(entity.getRubroPadre()));
+        }
+        return rubroDto;
+    }
 
-        return dto;
+    @Override
+    public Rubro toEntity(RubroDto dto) {
+        Rubro rubro = toEntityTypeMap.map(dto);
+        if (dto.getRubroPadre() != null) {
+            rubro.setRubroPadre(toEntity(dto.getRubroPadre()));
+        }
+        return rubro;
     }
 }

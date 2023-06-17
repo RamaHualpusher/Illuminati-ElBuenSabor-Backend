@@ -10,15 +10,16 @@ import lombok.Data;
 public class DetallePedido extends Base{
     @Column(name = "cantidad")
     private Integer cantidad;
-    @Column(name = "subtotal")
+    @Transient
     private Double subtotal;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_articulo")
-    private Articulo articulo;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_producto_manufacturado")
-    private ProductoManufacturado productoManufacturado;
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
+
+    public Double getSubtotal() {
+        return this.cantidad * this.producto.getPrecio();
+    }
 }

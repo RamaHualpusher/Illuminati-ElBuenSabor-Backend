@@ -19,22 +19,13 @@ public class Ingrediente extends Base{
     private Integer stockMinimo;
     @Column(name = "stock_actual")
     private Integer stockActual;
+    @Column(name = "unidad_medida")
+    private String unidadMedida;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
 
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<IngredienteCosto> ingredientesCosto;
-
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<IngredienteStockActual> ingredientesStockActual;
-
-
-    @OneToOne
-    @JoinColumn(name = "id_unidad_medida")
-    private UnidadMedida unidadMedida;
-
     @OneToMany(mappedBy = "ingrediente", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ProductoManufacturado_Ingrediente> productosManufacturadosIngredientes;
+    private List<Producto_Ingrediente> productosIngredientes;
 }

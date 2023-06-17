@@ -50,7 +50,18 @@ public abstract class GenericServiceImpl<D, E extends Base, ID extends Serializa
     @Transactional
     public D update(ID id, D dto) throws Exception {
         if (!repository.existsById(id)) throw new Exception();
-        return mapper.toDto(repository.save(mapper.toEntity(dto)));
+
+        // Obtén la entidad existente
+        E existingEntity = repository.findById(id).orElseThrow(Exception::new);
+
+        // Mapea el DTO a una nueva entidad
+        E newEntity = mapper.toEntity(dto);
+
+        // Asegúrate de que la nueva entidad tiene el ID correcto
+        newEntity.setId(existingEntity.getId());
+
+        // Guarda la entidad actualizada
+        return mapper.toDto(repository.save(newEntity));
     }
 
     @Override

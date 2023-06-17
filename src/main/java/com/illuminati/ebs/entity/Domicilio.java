@@ -10,9 +10,6 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_domicilio"))
 @Data
 public class Domicilio extends Base{
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", insertable = false, updatable = false)
-    private Usuario usuario;
 
     @Column(name = "calle")
     private String calle;
@@ -22,4 +19,7 @@ public class Domicilio extends Base{
 
     @Column(name = "localidad")
     private String localidad;
+
+    @OneToOne(mappedBy = "domicilio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Usuario usuario;
 }

@@ -10,10 +10,12 @@ public class PedidoDto {
     private Integer numeroPedido;
     private Date horaEstimadaFin;
     private String tipoEnvio;
-    private Date fecha;
-    private EstadoPedidoDto estadoPedido;
-    private TipoEntregaPedidoDto tipoEntregaPedido;
-    private TipoPagoDto tipoPago;
+    private boolean esDelivery;
+    private boolean esEfectivo;
+    private String estadoPedido;
+    private Date fechaPedido;
+    private Double total;
     private UsuarioDto usuario;
     private List<DetallePedidoDto> detallesPedidos;
+    private MercadoPagoDatosDto mercadoPagoDatos;
 }
