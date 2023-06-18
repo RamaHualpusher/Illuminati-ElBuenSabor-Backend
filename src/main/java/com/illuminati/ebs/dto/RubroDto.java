@@ -7,10 +7,10 @@ import java.util.List;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "idRubro")
+        property = "id")
 @Data
 public class RubroDto {
-    private Long idRubro;
+    private Long id;
     private String nombre;
     private RubroDto rubroPadre;
 }

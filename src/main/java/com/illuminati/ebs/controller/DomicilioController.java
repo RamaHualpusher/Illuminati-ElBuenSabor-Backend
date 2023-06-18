@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/domicilios")
+@RequestMapping("/api/domicilio")
 public class DomicilioController extends GenericController<DomicilioDto, Long>{
     public DomicilioController(DomicilioService service) {
         super(service);

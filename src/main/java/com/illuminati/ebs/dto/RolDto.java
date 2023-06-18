@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class RolDto {
-    private Long idRol;
+    private Long id;
     private UsuarioDto usuario;
     private String nombreRol;
 }

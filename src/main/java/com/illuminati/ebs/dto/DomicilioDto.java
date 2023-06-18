@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class DomicilioDto {
-    private Long idDomicilio;
+    private Long id;
     private String calle;
     private Integer numero;
     private String localidad;

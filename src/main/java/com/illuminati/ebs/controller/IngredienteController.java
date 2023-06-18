@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/ingredientes")
+@RequestMapping("/api/ingrediente")
 public class IngredienteController extends GenericController<IngredienteDto, Long>{
     public IngredienteController(IngredienteService service) {
         super(service);

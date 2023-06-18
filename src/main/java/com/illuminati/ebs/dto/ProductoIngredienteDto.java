@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProductoIngredienteDto {
-    private Long idProductoIngrediente;
+    private Long id;
     private ProductoDto producto;
     private IngredienteDto ingrediente;
     private Integer cantidad;

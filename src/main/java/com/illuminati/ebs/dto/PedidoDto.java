@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PedidoDto {
-    private Long idPedido;
+    private Long id;
     private Integer numeroPedido;
     private Date horaEstimadaFin;
     private String tipoEnvio;

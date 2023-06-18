@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/productos-manufacturados")
+@RequestMapping("/api/producto")
 public class ProductoController extends GenericController<ProductoDto, Long>{
     public ProductoController(ProductoService service) {
         super(service);

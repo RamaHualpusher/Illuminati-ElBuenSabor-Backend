@@ -23,8 +23,8 @@ public class RubroMapper implements GenericMapper<RubroDto, Rubro> {
         toDtoTypeMap = modelMapper.createTypeMap(Rubro.class, RubroDto.class);
         toEntityTypeMap = modelMapper.createTypeMap(RubroDto.class, Rubro.class);
 
-        toDtoTypeMap.addMappings(mapper -> mapper.map(Rubro::getId, RubroDto::setIdRubro));
-        toEntityTypeMap.addMappings(mapper -> mapper.map(RubroDto::getIdRubro, Rubro::setId));
+        toDtoTypeMap.addMappings(mapper -> mapper.map(Rubro::getId, RubroDto::setId));
+        toEntityTypeMap.addMappings(mapper -> mapper.map(RubroDto::getId, Rubro::setId));
 
         toDtoTypeMap.addMappings(mapper -> mapper.skip(RubroDto::setRubroPadre));
         toEntityTypeMap.addMappings(mapper -> mapper.skip(Rubro::setRubroPadre));
