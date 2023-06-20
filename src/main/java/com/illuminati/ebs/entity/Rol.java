@@ -10,8 +10,8 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "id_rol"))
 @Data
 public class Rol extends Base{
-    @OneToOne(mappedBy = "rol")
-    private Usuario usuarios;
+    @OneToMany(mappedBy = "rol")
+    private List<Usuario> usuarios;
 
     @Column(name = "nombre_rol")
     private String nombreRol;

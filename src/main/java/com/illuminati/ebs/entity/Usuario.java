@@ -33,7 +33,7 @@ public class Usuario extends Base{
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List <Pedido> pedidos;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_rol")
     private Rol rol;
 
