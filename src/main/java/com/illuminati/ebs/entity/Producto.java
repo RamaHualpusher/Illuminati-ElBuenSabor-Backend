@@ -1,12 +1,13 @@
 package com.illuminati.ebs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
 @Entity
 @Table(name = "Producto")
-@AttributeOverride(name = "id", column = @Column(name = "id_producto"))
 @Data
 public class Producto extends Base{
     @Column(name = "nombre")
@@ -30,12 +31,15 @@ public class Producto extends Base{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_rubro")
+    @JsonIgnoreProperties("producto") // Ignorar la propiedad "producto" en la entidad Rubro para evitar el ciclo infinito
     private Rubro rubro;
 
     @OneToMany(mappedBy = "producto", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore // Ignorar la propiedad "detallePedidos" en la entidad DetallePedido para evitar el ciclo infinito
     private List<DetallePedido> detallePedidos;
 
     @OneToMany(mappedBy = "producto", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore // Ignorar la propiedad "productosManufacturadosIngredientes" en la entidad Producto_Ingrediente para evitar el ciclo infinito
     private List<Producto_Ingrediente> productosManufacturadosIngredientes;
 
 }

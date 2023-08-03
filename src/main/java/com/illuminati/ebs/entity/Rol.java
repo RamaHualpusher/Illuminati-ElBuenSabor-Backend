@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Rol")
-@AttributeOverride(name = "id", column = @Column(name = "id_rol"))
 @Data
 public class Rol extends Base{
     @OneToOne(mappedBy = "rol")

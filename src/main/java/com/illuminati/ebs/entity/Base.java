@@ -15,4 +15,7 @@ public abstract class Base implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "activo")
+    private Boolean activo;
+
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Entity
 @Table(name = "DetallePedido")
-@AttributeOverride(name = "id", column = @Column(name = "id_detalle_pedido"))
 @Data
 public class DetallePedido extends Base{
     @Column(name = "cantidad")

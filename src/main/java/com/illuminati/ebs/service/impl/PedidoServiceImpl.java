@@ -8,10 +8,10 @@ import com.illuminati.ebs.service.PedidoService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PedidoServiceImpl extends GenericServiceImpl<PedidoDto, Pedido, Long> implements PedidoService {
+public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implements PedidoService {
 
-    public PedidoServiceImpl(PedidoRepository repository, PedidoMapper mapper) {
-        super(repository, mapper);
+    public PedidoServiceImpl(PedidoRepository repository) {
+        super(repository);
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "MercadoPagoDatos")
-@AttributeOverride(name = "id", column = @Column(name = "id_mercado_pago_datos"))
 @Data
 public class MercadoPagoDatos extends Base{
     @Column(name = "identificador_pago")

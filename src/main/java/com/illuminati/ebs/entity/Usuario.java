@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Usuario")
-@AttributeOverride(name = "id", column = @Column(name = "id_usuario"))
 @Data
 public class Usuario extends Base{
     @Column(name="nombre")

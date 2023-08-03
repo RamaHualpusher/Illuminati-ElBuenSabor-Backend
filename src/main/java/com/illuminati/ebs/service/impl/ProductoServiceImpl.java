@@ -8,9 +8,9 @@ import com.illuminati.ebs.service.ProductoService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoServiceImpl extends GenericServiceImpl<ProductoDto, Producto, Long> implements ProductoService {
+public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> implements ProductoService {
 
-    public ProductoServiceImpl(ProductoRepository repository, ProductoMapper mapper) {
-        super(repository, mapper);
+    public ProductoServiceImpl(ProductoRepository repository) {
+        super(repository);
     }
 }

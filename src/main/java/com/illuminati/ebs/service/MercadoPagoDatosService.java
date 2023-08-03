@@ -1,6 +1,6 @@
 package com.illuminati.ebs.service;
 
-import com.illuminati.ebs.dto.MercadoPagoDatosDto;
+import com.illuminati.ebs.entity.MercadoPagoDatos;
 
-public interface MercadoPagoDatosService extends GenericService<MercadoPagoDatosDto, Long>{
+public interface MercadoPagoDatosService extends GenericService<MercadoPagoDatos, Long>{
 }

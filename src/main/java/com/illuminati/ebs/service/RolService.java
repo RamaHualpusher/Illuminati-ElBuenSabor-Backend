@@ -1,6 +1,5 @@
 package com.illuminati.ebs.service;
 
-import com.illuminati.ebs.dto.RolDto;
-
-public interface RolService extends GenericService<RolDto, Long> {
+import com.illuminati.ebs.entity.Rol;
+public interface RolService extends GenericService<Rol, Long> {
 }

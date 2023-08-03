@@ -1,23 +1,24 @@
 package com.illuminati.ebs.service;
 
 
+import com.illuminati.ebs.entity.Base;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface GenericService<D, ID extends Serializable> {
+public interface GenericService<T extends Base, ID extends Serializable> {
 
-    List<D> findAll() throws Exception;
+    List<T> findAll() throws Exception;
 
-    Page<D> findAll(Pageable pageable) throws Exception;
+    Page<T> findAll(Pageable pageable) throws Exception;
 
-    D findById(ID id) throws Exception;
+    T findById(ID id) throws Exception;
 
-    D save(D dto) throws Exception;
+    T save(T entity) throws Exception;
 
-    D update(ID id, D dto) throws Exception;
+    T update(T entity) throws Exception;
 
     boolean delete(ID id) throws Exception;
 }

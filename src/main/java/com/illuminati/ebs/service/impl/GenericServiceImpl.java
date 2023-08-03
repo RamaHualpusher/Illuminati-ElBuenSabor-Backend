@@ -1,74 +1,97 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.entity.Base;
-import com.illuminati.ebs.mapper.GenericMapper;
+import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.repository.GenericRepository;
 import com.illuminati.ebs.service.GenericService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class GenericServiceImpl<D, E extends Base, ID extends Serializable> implements GenericService<D, ID> {
+public abstract class GenericServiceImpl<T extends Base, ID extends Serializable> implements GenericService<T, ID> {
+    protected GenericRepository<T,ID> genericRepository;
 
-    protected GenericRepository<E, ID> repository;
-    protected GenericMapper<D, E> mapper;
-
-    public GenericServiceImpl(GenericRepository<E, ID> repository, GenericMapper<D, E> mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<D> findAll() throws Exception {
-        return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<D> findAll(Pageable pageable) throws Exception {
-        return repository.findAll(pageable).map(mapper::toDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public D findById(ID id) throws Exception {
-        return mapper.toDto(repository.findById(id).orElseThrow(Exception::new));
+    public GenericServiceImpl(GenericRepository<T, ID> genericRepository)
+    {
+        this.genericRepository = genericRepository;
     }
 
     @Override
     @Transactional
-    public D save(D dto) throws Exception {
-        return mapper.toDto(repository.save(mapper.toEntity(dto)));
+    public List<T> findAll() throws ServiceException {
+        try {
+            return genericRepository.findAll();
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     @Transactional
-    public D update(ID id, D dto) throws Exception {
-        if (!repository.existsById(id)) throw new Exception();
+    public T findById(ID id) throws ServiceException {
+        try {
+            return genericRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("No se encontró ninguna entidad con el ID: " + id));
+        } catch (EntityNotFoundException e) {
+            throw new ServiceException(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-        // Obtén la entidad existente
-        E existingEntity = repository.findById(id).orElseThrow(Exception::new);
 
-        // Mapea el DTO a una nueva entidad
-        E newEntity = mapper.toEntity(dto);
 
-        // Asegúrate de que la nueva entidad tiene el ID correcto
-        newEntity.setId(existingEntity.getId());
 
-        // Guarda la entidad actualizada
-        return mapper.toDto(repository.save(newEntity));
+    @Override
+    @Transactional
+    public T save(T entity) throws ServiceException {
+        try {
+            entity = genericRepository.save(entity);
+            return entity;
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     @Transactional
-    public boolean delete(ID id) throws Exception {
-        if (!repository.existsById(id)) throw new Exception();
-        repository.deleteById(id);
-        return true;
+    public T update(T entity) throws ServiceException {
+        try {
+            if (entity.getId() == null) {
+                throw new ServiceException("La entidad a modificar debe contener un Id.");
+            }
+            return genericRepository.save(entity);
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean delete(ID id) throws ServiceException {
+        try {
+            genericRepository.deleteById(id);
+            return true;
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<T> findAll(Pageable pageable) throws ServiceException {
+        try {
+            Page<T> entities = genericRepository.findAll(pageable);
+            return entities;
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 }

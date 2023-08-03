@@ -8,10 +8,10 @@ import com.illuminati.ebs.service.MercadoPagoDatosService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MercadoPagoDatosServiceImpl extends GenericServiceImpl<MercadoPagoDatosDto, MercadoPagoDatos, Long> implements MercadoPagoDatosService {
+public class MercadoPagoDatosServiceImpl extends GenericServiceImpl<MercadoPagoDatos, Long> implements MercadoPagoDatosService {
 
-    public MercadoPagoDatosServiceImpl(MercadoPagoDatosRepository repository, MercadoPagoDatosMapper mapper) {
-        super(repository, mapper);
+    public MercadoPagoDatosServiceImpl(MercadoPagoDatosRepository repository) {
+        super(repository);
     }
 
 }

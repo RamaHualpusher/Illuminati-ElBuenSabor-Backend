@@ -7,7 +7,6 @@ import java.util.List;
 public class IngredienteDto {
     private Long id;
     private String nombre;
-    private Boolean estado;
     private Integer stockMinimo;
     private Integer stockActual;
     private String unidadMedida;

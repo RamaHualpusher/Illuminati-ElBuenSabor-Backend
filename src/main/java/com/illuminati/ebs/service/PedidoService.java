@@ -1,6 +1,5 @@
 package com.illuminati.ebs.service;
 
-import com.illuminati.ebs.dto.PedidoDto;
-
-public interface PedidoService extends GenericService<PedidoDto, Long>{
+import com.illuminati.ebs.entity.Pedido;
+public interface PedidoService extends GenericService<Pedido, Long>{
 }

@@ -9,9 +9,9 @@ import com.illuminati.ebs.service.impl.GenericServiceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioServiceImpl extends GenericServiceImpl<UsuarioDto, Usuario, Long> implements UsuarioService {
+public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implements UsuarioService {
 
-    public UsuarioServiceImpl(UsuarioRepository repository, UsuarioMapper mapper) {
-        super(repository, mapper);
+    public UsuarioServiceImpl(UsuarioRepository repository) {
+        super(repository);
     }
 }

@@ -9,9 +9,9 @@ import com.illuminati.ebs.service.impl.GenericServiceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RolServiceImpl extends GenericServiceImpl<RolDto, Rol, Long> implements RolService {
+public class RolServiceImpl extends GenericServiceImpl<Rol, Long> implements RolService {
 
-    public RolServiceImpl(RolRepository repository, RolMapper mapper) {
-        super(repository, mapper);
+    public RolServiceImpl(RolRepository repository) {
+        super(repository);
     }
 }

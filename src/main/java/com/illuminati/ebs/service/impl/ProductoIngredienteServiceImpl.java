@@ -8,10 +8,10 @@ import com.illuminati.ebs.service.ProductoIngredienteService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductoIngredienteServiceImpl extends GenericServiceImpl<ProductoIngredienteDto, Producto_Ingrediente, Long> implements ProductoIngredienteService {
+public class ProductoIngredienteServiceImpl extends GenericServiceImpl<Producto_Ingrediente, Long> implements ProductoIngredienteService {
 
-    public ProductoIngredienteServiceImpl(Producto_IngredienteRepository repository, ProductoIngredienteMapper mapper) {
-        super(repository, mapper);
+    public ProductoIngredienteServiceImpl(Producto_IngredienteRepository repository) {
+        super(repository);
     }
 
 

@@ -1,6 +1,6 @@
 package com.illuminati.ebs.service;
 
-import com.illuminati.ebs.dto.IngredienteDto;
+import com.illuminati.ebs.entity.Ingrediente;
 
-public interface IngredienteService extends GenericService<IngredienteDto, Long>{
+public interface IngredienteService extends GenericService<Ingrediente, Long>{
 }

@@ -8,9 +8,9 @@ import com.illuminati.ebs.service.DetallePedidoService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DetallePedidoServiceImpl extends GenericServiceImpl<DetallePedidoDto, DetallePedido, Long> implements DetallePedidoService {
+public class DetallePedidoServiceImpl extends GenericServiceImpl<DetallePedido, Long> implements DetallePedidoService {
 
-        public DetallePedidoServiceImpl(DetallePedidoRepository repository, DetallePedidoMapper mapper) {
-            super(repository, mapper);
+        public DetallePedidoServiceImpl(DetallePedidoRepository repository) {
+            super(repository);
         }
 }
