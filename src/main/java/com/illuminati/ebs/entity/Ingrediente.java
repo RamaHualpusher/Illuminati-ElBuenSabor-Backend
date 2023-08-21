@@ -20,9 +20,8 @@ public class Ingrediente extends Base{
     @Column(name = "unidad_medida")
     private String unidadMedida;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "id_rubro")
-    @JsonIgnore  // Evita la recursión infinita al serializar
     private Rubro rubro;
 
     @OneToMany(mappedBy = "ingrediente", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)

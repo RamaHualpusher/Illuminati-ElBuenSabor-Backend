@@ -29,9 +29,8 @@ public class Producto extends Base{
     @Column(name = "es_bebida")
     private Boolean esBebida;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_rubro")
-    @JsonIgnoreProperties("producto") // Ignorar la propiedad "producto" en la entidad Rubro para evitar el ciclo infinito
     private Rubro rubro;
 
     @OneToMany(mappedBy = "producto", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
