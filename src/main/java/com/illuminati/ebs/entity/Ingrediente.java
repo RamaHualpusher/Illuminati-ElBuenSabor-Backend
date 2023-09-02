@@ -1,10 +1,12 @@
 package com.illuminati.ebs.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "Ingrediente")
@@ -20,10 +22,12 @@ public class Ingrediente extends Base{
     @Column(name = "unidad_medida")
     private String unidadMedida;
 
+    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Ignorar la propiedad "ingrediente" en la serialización de Producto_Ingrediente
+    private List<Producto_Ingrediente> productosIngredientes = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
 
-    @OneToMany(mappedBy = "ingrediente", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Producto_Ingrediente> productosIngredientes;
 }

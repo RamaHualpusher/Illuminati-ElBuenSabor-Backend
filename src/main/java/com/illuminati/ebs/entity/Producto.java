@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,16 +31,11 @@ public class Producto extends Base{
     @Column(name = "es_bebida")
     private Boolean esBebida;
 
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Ignorar la propiedad "producto" en la serialización de Producto_Ingrediente
+    private List<Producto_Ingrediente> productosIngredientes = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
-
-    @OneToMany(mappedBy = "producto", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore // Ignorar la propiedad "detallePedidos" en la entidad DetallePedido para evitar el ciclo infinito
-    private List<DetallePedido> detallePedidos;
-
-    @OneToMany(mappedBy = "producto", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore // Ignorar la propiedad "productosManufacturadosIngredientes" en la entidad Producto_Ingrediente para evitar el ciclo infinito
-    private List<Producto_Ingrediente> productosManufacturadosIngredientes;
-
 }

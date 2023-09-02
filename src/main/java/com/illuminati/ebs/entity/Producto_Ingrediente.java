@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 @Table(name = "Producto_Ingrediente")
 public class Producto_Ingrediente extends Base{
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "id_ingrediente",insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_ingrediente")
     private Ingrediente ingrediente;
 
     @Column(name = "cantidad")
