@@ -36,7 +36,5 @@ public class Usuario extends Base{
     @JoinColumn(name = "id_rol")
     private Rol rol;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List <Pedido> pedidos;
 
 }

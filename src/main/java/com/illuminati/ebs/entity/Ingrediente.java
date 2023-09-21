@@ -22,10 +22,6 @@ public class Ingrediente extends Base{
     @Column(name = "unidad_medida")
     private String unidadMedida;
 
-    @OneToMany(mappedBy = "ingrediente", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore // Ignorar la propiedad "ingrediente" en la serialización de Producto_Ingrediente
-    private List<Producto_Ingrediente> productosIngredientes = new ArrayList<>();
-
     @OneToOne
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
