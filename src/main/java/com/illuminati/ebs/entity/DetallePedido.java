@@ -11,10 +11,10 @@ public class DetallePedido extends Base{
     private Integer cantidad;
     @Transient
     private Double subtotal;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 

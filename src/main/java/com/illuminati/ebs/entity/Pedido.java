@@ -34,13 +34,13 @@ public class Pedido extends  Base{
     private Date fechaPedido;
 
     @Transient
-    private Double total;
+    private Double total = 0.0;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<DetallePedido> detallesPedidos = new ArrayList<>();
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
