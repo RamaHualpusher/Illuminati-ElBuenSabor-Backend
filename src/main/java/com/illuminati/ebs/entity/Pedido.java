@@ -1,5 +1,6 @@
 package com.illuminati.ebs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -40,6 +41,7 @@ public class Pedido extends  Base{
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<DetallePedido> detallesPedidos = new ArrayList<>();
 
