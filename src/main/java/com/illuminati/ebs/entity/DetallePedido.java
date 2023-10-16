@@ -18,7 +18,12 @@ public class DetallePedido extends Base{
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
+    @Transient
     public Double getSubtotal() {
-        return this.cantidad * this.producto.getPrecio();
+        if(this.producto.getPrecio() != null && this.cantidad != null) {
+            return this.cantidad * this.producto.getPrecio();
+        }else {
+            return 0.0;
+        }
     }
 }

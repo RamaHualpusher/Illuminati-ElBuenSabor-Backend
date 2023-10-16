@@ -18,4 +18,7 @@ public class ServiceException extends RuntimeException {
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
+    public HttpStatus getStatus() {
+        return httpStatus;
+    }
 }

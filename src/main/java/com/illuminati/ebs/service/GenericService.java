@@ -2,6 +2,7 @@ package com.illuminati.ebs.service;
 
 
 import com.illuminati.ebs.entity.Base;
+import com.illuminati.ebs.exception.ServiceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,4 +22,5 @@ public interface GenericService<T extends Base, ID extends Serializable> {
     T update(T entity) throws Exception;
 
     boolean delete(ID id) throws Exception;
+    public List<T> findAllActive() throws ServiceException;
 }

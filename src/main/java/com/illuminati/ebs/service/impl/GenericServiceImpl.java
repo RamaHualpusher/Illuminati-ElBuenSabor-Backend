@@ -77,9 +77,16 @@ public abstract class GenericServiceImpl<T extends Base, ID extends Serializable
     @Transactional
     public boolean delete(ID id) throws ServiceException {
         try {
-            genericRepository.deleteById(id);
-            return true;
-        }catch (Exception e) {
+            Optional<T> entityOptional = genericRepository.findById(id);
+            if (entityOptional.isPresent()) {
+                T entity = entityOptional.get();
+                entity.setActivo(false); // Desactivar en lugar de eliminar
+                genericRepository.save(entity);
+                return true;
+            } else {
+                return false; // No se encontró el registro
+            }
+        } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
@@ -91,6 +98,15 @@ public abstract class GenericServiceImpl<T extends Base, ID extends Serializable
             Page<T> entities = genericRepository.findAll(pageable);
             return entities;
         }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+    @Override
+    @Transactional
+    public List<T> findAllActive() throws ServiceException {
+        try {
+            return genericRepository.findAllByActivoTrue();
+        } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
