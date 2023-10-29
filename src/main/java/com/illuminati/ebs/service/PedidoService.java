@@ -7,5 +7,5 @@ import com.illuminati.ebs.exception.ServiceException;
 import java.util.List;
 
 public interface PedidoService extends GenericService<Pedido, Long>{
-
+    List<Pedido> findPedidosByUsuarioId(Long usuarioId);
 }

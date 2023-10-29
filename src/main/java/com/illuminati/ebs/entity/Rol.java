@@ -13,4 +13,13 @@ public class Rol extends Base{
 
     @Column(name = "nombre_rol")
     private String nombreRol;
+
+    public Rol() {
+    }
+    public Rol(Long rolId, boolean rolActivo, String rolNombreRol) {
+        this.setId(rolId);
+        this.setActivo(rolActivo);
+        this.nombreRol = rolNombreRol;
+    }
+
 }

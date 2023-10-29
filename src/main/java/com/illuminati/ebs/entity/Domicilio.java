@@ -20,4 +20,14 @@ public class Domicilio extends Base{
     @Column(name = "localidad")
     private String localidad;
 
+
+    public Domicilio() {
+    }
+    public Domicilio(Long domicilioId, boolean domicilioActivo, String domicilioCalle, Integer domicilioNumero, String domicilioLocalidad) {
+        this.setId(domicilioId);
+        this.setActivo(domicilioActivo);
+        this.calle = domicilioCalle;
+        this.numero = domicilioNumero;
+        this.localidad = domicilioLocalidad;
+    }
 }
