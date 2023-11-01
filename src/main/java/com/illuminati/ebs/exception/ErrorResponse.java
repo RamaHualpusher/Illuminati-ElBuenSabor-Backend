@@ -9,6 +9,8 @@ public class ErrorResponse {
     private String message;
     private HttpStatus status; // Agregar un campo HttpStatus
 
+    public ErrorResponse() {
+    }
     public ErrorResponse(int code, String message, HttpStatus status) {
         this.code = code;
         this.message = message;

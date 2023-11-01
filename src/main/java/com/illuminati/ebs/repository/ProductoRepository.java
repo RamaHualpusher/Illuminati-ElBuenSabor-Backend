@@ -1,7 +1,9 @@
 package com.illuminati.ebs.repository;
 
 import com.illuminati.ebs.dto.ProductoRanking;
+import com.illuminati.ebs.entity.Ingrediente;
 import com.illuminati.ebs.entity.Producto;
+import com.illuminati.ebs.exception.ServiceException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
