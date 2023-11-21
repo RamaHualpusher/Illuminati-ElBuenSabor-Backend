@@ -48,4 +48,7 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
     @Query("SELECT u FROM Usuario u WHERE u.rol.id = 5")
     List<Usuario> findAllClientes();
 
+    @Query("SELECT u FROM Usuario u WHERE u.rol.id IN (1, 2, 3, 4)")
+    List<Usuario> findAllEmpleados();
+
 }

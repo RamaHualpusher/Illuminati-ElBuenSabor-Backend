@@ -45,5 +45,14 @@ public class UsuarioController extends GenericController<Usuario, Long> {
         }
     }
 
-
+    @GetMapping("/empleados")
+    public ResponseEntity<?> getEmpleados() {
+        try {
+            List<Usuario> empleados = service.obtenerListaEmpleados();
+            return ResponseEntity.ok(empleados);
+        } catch (ServiceException e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getStatus().value(), e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errorResponse);
+        }
+    }
 }

@@ -75,4 +75,13 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
         }
     }
 
+    @Override
+    public List<Usuario> obtenerListaEmpleados() throws ServiceException {
+        try {
+            return repository.findAllEmpleados();
+        } catch (Exception e) {
+            throw new ServiceException("Error al obtener la lista de usuarios que no son clientes: " + e.getMessage());
+        }
+    }
+
 }

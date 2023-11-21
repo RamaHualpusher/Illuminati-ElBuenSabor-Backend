@@ -11,4 +11,6 @@ public interface UsuarioService extends GenericService<Usuario, Long> {
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException;
     List<Usuario> obtenerListaClientes() throws ServiceException;
 
+    List<Usuario> obtenerListaEmpleados() throws ServiceException;
+
 }
