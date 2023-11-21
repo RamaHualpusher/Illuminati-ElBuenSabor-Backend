@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface UsuarioService extends GenericService<Usuario, Long> {
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException;
+    List<Usuario> obtenerListaClientes() throws ServiceException;
+
 }

@@ -7,12 +7,10 @@ import com.illuminati.ebs.exception.ErrorResponse;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/usuario")
 public class UsuarioController extends GenericController<Usuario, Long> {
@@ -23,6 +21,7 @@ public class UsuarioController extends GenericController<Usuario, Long> {
         super(service);
         this.service = service;
     }
+
     @GetMapping("/ranking")
     public ResponseEntity<?> getTopUserRanking() {
         try {
@@ -34,5 +33,17 @@ public class UsuarioController extends GenericController<Usuario, Long> {
             return ResponseEntity.status(e.getStatus()).body(errorResponse);
         }
     }
+
+    @GetMapping("/clientes")
+    public ResponseEntity<?> getClientes() {
+        try {
+            List<Usuario> clientes = service.obtenerListaClientes();
+            return ResponseEntity.ok(clientes);
+        } catch (ServiceException e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getStatus().value(), e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errorResponse);
+        }
+    }
+
 
 }
