@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/detalle-pedido")
+@CrossOrigin(origins = "*")
 public class DetallePedidoController extends GenericController<DetallePedido, Long> {
 
     private final DetallePedidoService detallePedidoService;
