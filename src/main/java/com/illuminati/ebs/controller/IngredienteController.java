@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/ingrediente")
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/ingrediente")
+
+
 public class IngredienteController extends GenericController<Ingrediente, Long>{
     private final IngredienteService service;
     public IngredienteController(IngredienteService service) {
@@ -24,6 +26,7 @@ public class IngredienteController extends GenericController<Ingrediente, Long>{
             Ingrediente ingrediente = service.addStock(ingredienteId, cantidad);
             return new ResponseEntity<>(ingrediente, HttpStatus.OK);
         } catch (ServiceException e) {
+            System.out.println("cantidad" + cantidad);
             return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
         }
     }
