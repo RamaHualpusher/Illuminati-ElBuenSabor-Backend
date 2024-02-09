@@ -37,6 +37,12 @@ public abstract class GenericController<T extends Base, ID extends Serializable>
         return ResponseEntity.ok(service.findAllActive());
     }
 
+    @GetMapping("/inactive")
+    public ResponseEntity<List<T>> findAllInactive() throws Exception {
+        return ResponseEntity.ok(service.findAllActiveFalse());
+    }
+
+
     @GetMapping(params = { "page", "size" })
     public ResponseEntity<Page<T>> findAll(Pageable pageable) throws Exception {
         return ResponseEntity.ok(service.findAll(pageable));

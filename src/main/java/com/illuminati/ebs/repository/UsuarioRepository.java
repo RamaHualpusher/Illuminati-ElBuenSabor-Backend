@@ -3,6 +3,7 @@ package com.illuminati.ebs.repository;
 import com.illuminati.ebs.dto.RankingUsuarioPedido;
 import com.illuminati.ebs.entity.Usuario;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,5 +44,11 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "ORDER BY cantidad_pedidos DESC",
             nativeQuery = true)
     List<Object[]> findRankingUsuarioPedidos();
+
+    @Query("SELECT u FROM Usuario u WHERE u.rol.id = 5")
+    List<Usuario> findAllClientes();
+
+    @Query("SELECT u FROM Usuario u WHERE u.rol.id IN (1, 2, 3, 4)")
+    List<Usuario> findAllEmpleados();
 
 }

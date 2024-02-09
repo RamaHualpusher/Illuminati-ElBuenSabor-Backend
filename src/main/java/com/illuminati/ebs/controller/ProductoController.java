@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/producto")
+@CrossOrigin(origins = "*")
 public class ProductoController extends GenericController<Producto, Long>{
     private final ProductoService service;
     public ProductoController(ProductoService service) {

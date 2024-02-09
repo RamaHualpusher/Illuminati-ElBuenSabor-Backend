@@ -66,5 +66,22 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
         return Arrays.stream(row).noneMatch(Objects::isNull);
     }
 
+    @Override
+    public List<Usuario> obtenerListaClientes() throws ServiceException {
+        try {
+            return repository.findAllClientes();
+        } catch (Exception e) {
+            throw new ServiceException("Error al obtener la lista de clientes por rol: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Usuario> obtenerListaEmpleados() throws ServiceException {
+        try {
+            return repository.findAllEmpleados();
+        } catch (Exception e) {
+            throw new ServiceException("Error al obtener la lista de usuarios que no son clientes: " + e.getMessage());
+        }
+    }
 
 }

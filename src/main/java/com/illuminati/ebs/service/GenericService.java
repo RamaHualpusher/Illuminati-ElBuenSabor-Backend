@@ -23,4 +23,5 @@ public interface GenericService<T extends Base, ID extends Serializable> {
 
     boolean delete(ID id) throws Exception;
     public List<T> findAllActive() throws ServiceException;
+    List<T> findAllActiveFalse() throws ServiceException;
 }

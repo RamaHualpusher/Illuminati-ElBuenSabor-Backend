@@ -6,13 +6,13 @@ import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.service.IngredienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/ingrediente")
+
+
 public class IngredienteController extends GenericController<Ingrediente, Long>{
     private final IngredienteService service;
     public IngredienteController(IngredienteService service) {
@@ -26,6 +26,7 @@ public class IngredienteController extends GenericController<Ingrediente, Long>{
             Ingrediente ingrediente = service.addStock(ingredienteId, cantidad);
             return new ResponseEntity<>(ingrediente, HttpStatus.OK);
         } catch (ServiceException e) {
+            System.out.println("cantidad" + cantidad);
             return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());
         }
     }

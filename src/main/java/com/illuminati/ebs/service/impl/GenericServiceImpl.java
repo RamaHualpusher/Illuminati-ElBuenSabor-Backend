@@ -110,4 +110,14 @@ public abstract class GenericServiceImpl<T extends Base, ID extends Serializable
             throw new ServiceException(e.getMessage());
         }
     }
+
+    @Override
+    @Transactional
+    public List<T> findAllActiveFalse() throws ServiceException {
+        try {
+            return genericRepository.findAllByActivoFalse();
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
 }

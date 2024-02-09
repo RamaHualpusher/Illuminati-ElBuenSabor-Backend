@@ -11,4 +11,5 @@ import java.util.List;
 public interface GenericRepository<E extends Base, ID extends Serializable> extends JpaRepository<E, ID> {
     // Método para obtener registros activos
     List<E> findAllByActivoTrue();
+    List<E> findAllByActivoFalse();
 }

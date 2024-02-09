@@ -18,7 +18,7 @@ public class Producto extends Base{
     private Integer tiempoEstimadoCocina;
     @Column(name = "denominacion")
     private String denominacion;
-    @Column(name = "imagen")
+    @Column(name = "imagen", length = 1000)
     private String imagen;
     @Column(name = "stock_minimo")
     private Integer stockMinimo;
