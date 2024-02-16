@@ -11,12 +11,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/pedido")
 @CrossOrigin(origins = "*")
-public class PedidoController {
-
+public class PedidoController extends GenericController<Pedido, Long>{
+    //agregue "extends GenericController<Pedido, Long>{"
     private final PedidoService pedidoService;
 
     @Autowired
     public PedidoController(PedidoService pedidoService) {
+        //agregue super(pedidoService);
+        super(pedidoService);
         this.pedidoService = pedidoService;
     }
 
