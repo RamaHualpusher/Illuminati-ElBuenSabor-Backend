@@ -4,6 +4,8 @@ import com.illuminati.ebs.entity.Domicilio;
 import com.illuminati.ebs.entity.Rol;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class RankingUsuarioPedido {
     private Long id;
@@ -18,10 +20,11 @@ public class RankingUsuarioPedido {
     private Rol rol;
     private Long cantidadPedidos;
     private String estadoPedido;
+    private Date fechaPedido;
 
     public RankingUsuarioPedido(Long id, boolean activo, String nombre, String apellido, String email, String clave, String telefono,
                                 Long domicilioId, boolean domicilioActivo, String domicilioCalle, Integer domicilioNumero, String domicilioLocalidad,
-                                Long rolId, boolean rolActivo, String rolNombreRol, Long cantidadPedidos, String estadoPedido) {
+                                Long rolId, boolean rolActivo, String rolNombreRol, Long cantidadPedidos, String estadoPedido, Date fechaPedido) {
         this.id = id;
         this.activo = activo;
         this.nombre = nombre;
@@ -34,5 +37,6 @@ public class RankingUsuarioPedido {
         this.rol = new Rol(rolId, rolActivo, rolNombreRol);
         this.cantidadPedidos = cantidadPedidos;
         this.estadoPedido = estadoPedido;
+        this.fechaPedido = fechaPedido;
     }
 }

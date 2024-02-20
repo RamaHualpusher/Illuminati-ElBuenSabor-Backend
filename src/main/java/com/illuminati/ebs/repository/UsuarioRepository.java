@@ -28,7 +28,8 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "    r.activo AS rol_activo, " +
                     "    r.nombre_rol AS rol_nombre_rol, " +
                     "    cantidad_pedidos, " +
-                    "    estado_pedido " +
+                    "    subquery.estado_pedido, " +
+                    "    p.fecha_pedido " +
                     "FROM " +
                     "    ( " +
                     "        SELECT " +
@@ -41,6 +42,7 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "JOIN usuario u ON u.id = subquery.id_usuario " +
                     "LEFT JOIN domicilio d ON u.id_domicilio = d.id " +
                     "LEFT JOIN rol r ON u.id_rol = r.id " +
+                    "LEFT JOIN pedido p ON p.id_usuario = u.id " +
                     "ORDER BY cantidad_pedidos DESC",
             nativeQuery = true)
     List<Object[]> findRankingUsuarioPedidos();

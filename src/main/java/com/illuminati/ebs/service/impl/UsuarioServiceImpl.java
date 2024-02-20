@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
         try {
             List<Object[]> results = repository.findRankingUsuarioPedidos();
             return results.stream()
-                    .filter(row -> row.length >= 17 && noNullValues(row)) // Filtra filas con al menos 17 valores y sin nulos
+                    .filter(row -> row.length >= 18 && noNullValues(row)) // Filtra filas con al menos 17 valores y sin nulos
                     .map(row -> new RankingUsuarioPedido(
                             (Long) row[0],
                             (Boolean) row[1],
@@ -49,7 +50,8 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
                             (Boolean) row[13],
                             (String) row[14],
                             (Long) row[15],
-                            (String) row[16]
+                            (String) row[16],
+                            (Date) row[17]
                     ))
                     .collect(Collectors.toList());
         } catch (DataAccessException e) {
