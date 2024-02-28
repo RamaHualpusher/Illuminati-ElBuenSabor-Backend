@@ -5,6 +5,7 @@ import com.illuminati.ebs.entity.Producto; // Asegúrate de importar la clase Pr
 import com.illuminati.ebs.service.DetallePedidoService;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.exception.ErrorResponse; // Importa la clase ErrorResponse
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,5 +23,10 @@ public class DetallePedidoController extends GenericController<DetallePedido, Lo
         this.detallePedidoService = service;
     }
 
+    @GetMapping("/pedido/{pedidoId}")
+    public ResponseEntity<List<DetallePedido>> getDetallesPedidoByPedidoId(@PathVariable Long pedidoId) {
+        List<DetallePedido> detallesPedido = detallePedidoService.findDetallesPedidoByPedidoId(pedidoId);
+        return new ResponseEntity<>(detallesPedido, HttpStatus.OK);
+    }
 
 }

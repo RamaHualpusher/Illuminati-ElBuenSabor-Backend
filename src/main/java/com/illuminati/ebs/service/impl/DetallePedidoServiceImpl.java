@@ -14,7 +14,16 @@ import java.util.List;
 @Service
 public class DetallePedidoServiceImpl extends GenericServiceImpl<DetallePedido, Long> implements DetallePedidoService {
 
+        private final DetallePedidoRepository repository;
         public DetallePedidoServiceImpl(DetallePedidoRepository repository) {
+
             super(repository);
+            this.repository = repository;
         }
+
+        @Override
+        public List<DetallePedido> findDetallesPedidoByPedidoId(Long pedidoId) {
+            return repository.findByPedidoId(pedidoId);
+        }
+
 }

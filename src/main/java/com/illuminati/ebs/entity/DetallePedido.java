@@ -1,5 +1,6 @@
 package com.illuminati.ebs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class DetallePedido extends Base{
     @Transient
     private Double subtotal;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
     @ManyToOne
