@@ -16,7 +16,7 @@ public class Ingrediente extends Base{
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "precio_costo")
-    private Integer precioCosto;
+    private Double precioCosto;
     @Column(name = "stock_minimo")
     private Integer stockMinimo;
     @Column(name = "stock_actual")
