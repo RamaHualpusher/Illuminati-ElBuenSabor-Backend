@@ -38,7 +38,7 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
         try {
             // Guardar el producto
             entity = genericRepository.save(entity);
-
+            entity.getRubro().setIngredientOwner(false);
             // Asignar el producto a cada Producto_Ingrediente y guardarlos
             for (Producto_Ingrediente pi : entity.getProductosIngredientes()) {
                 pi.setProducto(entity);
