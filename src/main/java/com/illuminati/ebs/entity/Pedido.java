@@ -18,9 +18,6 @@ public class Pedido extends  Base{
     @Column(name="hora_estimada_fin")
     private Date horaEstimadaFin;
 
-    @Column(name = "tipo_envio")
-    private String tipoEnvio;
-
     @Column(name = "es_delivery")
     private boolean esDelivery;
 

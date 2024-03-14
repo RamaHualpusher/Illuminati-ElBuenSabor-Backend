@@ -1,10 +1,14 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.PedidoDto;
+import com.illuminati.ebs.entity.DetallePedido;
 import com.illuminati.ebs.entity.Pedido;
+import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.repository.PedidoRepository;
+import com.illuminati.ebs.service.DetallePedidoService;
 import com.illuminati.ebs.service.PedidoService;
+import com.illuminati.ebs.service.UsuarioService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,9 +21,14 @@ import java.util.Optional;
 public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implements PedidoService {
 
     private final PedidoRepository repository;
-    public PedidoServiceImpl(PedidoRepository repository) {
+    private final UsuarioService usuarioService;
+    private final DetallePedidoService detallePedidoService; // Inyecta el servicio de detalles de pedido
+
+    public PedidoServiceImpl(PedidoRepository repository, UsuarioService usuarioService, DetallePedidoService detallePedidoService) {
         super(repository);
         this.repository = repository;
+        this.usuarioService = usuarioService;
+        this.detallePedidoService = detallePedidoService; // Inicializa el servicio de detalles de pedido
     }
 
     @Override
@@ -35,7 +44,6 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     @Transactional
     public Pedido save(Pedido entity) throws ServiceException {
         try {
-            // Realizar validaciones y configuraciones adicionales aquí
             if (entity.getNumeroPedido() == null) {
                 throw new ServiceException("El número de pedido no puede ser nulo.");
             }
@@ -44,17 +52,25 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
                 throw new ServiceException("La hora estimada de fin no puede ser nula.");
             }
 
-            // Realizar otras validaciones y configuraciones según sea necesario...
+            // Cargar el usuario desde la base de datos utilizando el servicio de Usuario
+            Usuario usuario = usuarioService.findById(entity.getUsuario().getId());
+
+            // Asignar el usuario al pedido
+            entity.setUsuario(usuario);
 
             // Guardar el pedido
             entity = genericRepository.save(entity);
 
+            // Guardar los detalles del pedido
+            for (DetallePedido detalle : entity.getDetallesPedidos()) {
+                detalle.setPedido(entity); // Establece la relación bidireccional
+                detallePedidoService.save(detalle);
+            }
+
             return entity;
         } catch (ServiceException e) {
-            // Relanzar excepción de servicio con el mensaje adecuado
             throw e;
         } catch (Exception e) {
-            // Capturar cualquier otra excepción y lanzar una ServiceException con un mensaje genérico
             throw new ServiceException("Error al guardar el pedido: " + e.getMessage());
         }
     }

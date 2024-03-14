@@ -8,29 +8,37 @@ import com.illuminati.ebs.entity.Rol;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.mapper.UsuarioMapper;
+import com.illuminati.ebs.repository.RolRepository;
 import com.illuminati.ebs.repository.UsuarioRepository;
 import com.illuminati.ebs.service.UsuarioService;
 import com.illuminati.ebs.service.impl.GenericServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implements UsuarioService {
 
-    private final UsuarioRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final RolRepository rolRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository repository) {
-        super(repository);
-        this.repository = repository;
+    private static final Logger log = LoggerFactory.getLogger(UsuarioServiceImpl.class);
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+        super(usuarioRepository);
+        this.usuarioRepository = usuarioRepository;
+        this.rolRepository = rolRepository;
     }
     @Override
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException {
         try {
-            List<Object[]> results = repository.findRankingUsuarioPedidos();
+            List<Object[]> results = usuarioRepository.findRankingUsuarioPedidos();
             Map<Long, RankingUsuarioPedido> usuarioMap = new HashMap<>();
             for (Object[] row : results) {
                 Long usuarioId = (Long) row[0];
@@ -95,7 +103,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     @Override
     public List<Usuario> obtenerListaClientes() throws ServiceException {
         try {
-            return repository.findAllClientes();
+            return usuarioRepository.findAllClientes();
         } catch (Exception e) {
             throw new ServiceException("Error al obtener la lista de clientes por rol: " + e.getMessage());
         }
@@ -104,10 +112,76 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     @Override
     public List<Usuario> obtenerListaEmpleados() throws ServiceException {
         try {
-            return repository.findAllEmpleados();
+            return usuarioRepository.findAllEmpleados();
         } catch (Exception e) {
             throw new ServiceException("Error al obtener la lista de usuarios que no son clientes: " + e.getMessage());
         }
+    }
+    @Override
+    public Usuario buscarClientePorEmail(String email) throws ServiceException {
+        try {
+            Optional<Usuario> clienteOptional = usuarioRepository.findByEmailAndCliente(email);
+            return clienteOptional.orElse(null); // Devuelve el usuario si se encuentra, de lo contrario null
+        } catch (Exception e) {
+            throw new ServiceException("Error al buscar usuario cliente por email: " + e.getMessage());
+        }
+    }
+    @Override
+    public Usuario crearClienteSiNoExiste(Usuario usuario) throws ServiceException {
+        // Verificar si el usuario ya existe
+        String email = usuario.getEmail();
+        Usuario clienteExistente = buscarClientePorEmail(email);
+        if (clienteExistente != null) {
+            // Log para informar que el cliente ya existe
+            log.info("El usuario con el correo electrónico {} ya existe.", email);
+            // Emitir un error 404 (NOT FOUND) ya que el usuario ya existe
+            throw new ServiceException("El usuario con el correo electrónico ya existe", HttpStatus.NOT_FOUND);
+        } else {
+            // Validar campos obligatorios
+            if (usuario.getNombre() == null || usuario.getApellido() == null || usuario.getEmail() == null) {
+                // Log para registrar el error de campos obligatorios faltantes
+                log.error("El usuario proporcionado no tiene todos los campos obligatorios: {}", usuario);
+                throw new ServiceException("El usuario proporcionado no tiene todos los campos obligatorios", HttpStatus.BAD_REQUEST);
+            }
+
+            // Validar formato de correo electrónico
+            if (!isValidEmail(usuario.getEmail())) {
+                // Log para registrar el error de formato de correo electrónico inválido
+                log.error("El correo electrónico proporcionado no es válido: {}", usuario.getEmail());
+                throw new ServiceException("El correo electrónico proporcionado no es válido", HttpStatus.BAD_REQUEST);
+            }
+
+            // Asignar rol de cliente si no tiene rol asignado
+            Rol clienteRol = rolRepository.findByNombreRol("Cliente");
+            if (clienteRol == null) {
+                // Log para registrar el error de no encontrar el rol "Cliente"
+                log.error("No se encontró el rol 'Cliente' en la base de datos");
+                throw new ServiceException("No se encontró el rol 'Cliente' en la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            usuario.setRol(clienteRol);
+
+            // Guardar el nuevo cliente
+            try {
+                Usuario nuevoCliente = usuarioRepository.save(usuario);
+                // Log para registrar la creación exitosa del nuevo cliente
+                log.info("Se creó exitosamente un nuevo cliente con el correo electrónico: {}", nuevoCliente.getEmail());
+                return nuevoCliente;
+            } catch (Exception e) {
+                // Log para registrar el error al crear el cliente
+                log.error("Error al crear el usuario cliente: {}", e.getMessage());
+                throw new ServiceException("Error al crear el usuario cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+
+
+
+    // Método para validar el formato de correo electrónico usando una expresión regular
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return email != null && pattern.matcher(email).matches();
     }
 
 }
