@@ -35,4 +35,5 @@ public class MercadoPagoDatos extends Base{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
+
 }

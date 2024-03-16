@@ -19,6 +19,10 @@ public class DetallePedido extends Base{
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
+    @Transient
+    private Integer maxCantidadProducto;
+
+
 
     @Transient
     public Double getSubtotal() {

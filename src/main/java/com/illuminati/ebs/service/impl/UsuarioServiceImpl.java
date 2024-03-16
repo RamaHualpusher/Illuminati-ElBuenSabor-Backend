@@ -161,6 +161,8 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
 
             usuario.setRol(clienteRol);
 
+            //Setear estado activo
+            usuario.setActivo(true);
             // Guardar el nuevo cliente
             try {
                 Usuario nuevoCliente = usuarioRepository.save(usuario);

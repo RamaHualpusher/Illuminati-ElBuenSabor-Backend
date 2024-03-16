@@ -44,9 +44,6 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     @Transactional
     public Pedido save(Pedido entity) throws ServiceException {
         try {
-            if (entity.getNumeroPedido() == null) {
-                throw new ServiceException("El número de pedido no puede ser nulo.");
-            }
 
             if (entity.getHoraEstimadaFin() == null) {
                 throw new ServiceException("La hora estimada de fin no puede ser nula.");

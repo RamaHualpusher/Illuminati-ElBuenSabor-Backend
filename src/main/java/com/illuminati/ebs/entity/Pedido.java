@@ -12,8 +12,6 @@ import java.util.List;
 @Table(name = "Pedido")
 @Data
 public class Pedido extends  Base{
-    @Column(name = "numero_pedido")
-    private Integer numeroPedido;
 
     @Column(name="hora_estimada_fin")
     private Date horaEstimadaFin;
