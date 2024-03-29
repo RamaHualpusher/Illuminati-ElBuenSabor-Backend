@@ -2,6 +2,7 @@ package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.IngredienteDto;
 import com.illuminati.ebs.entity.Ingrediente;
+import com.illuminati.ebs.entity.Rubro;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.mapper.IngredienteMapper;
 import com.illuminati.ebs.repository.IngredienteRepository;
@@ -16,6 +17,27 @@ public class IngredienteServiceImpl extends GenericServiceImpl<Ingrediente, Long
     public IngredienteServiceImpl(IngredienteRepository repository) {
         super(repository);
         this.repository = repository;
+    }
+    @Override
+    @Transactional
+    public Ingrediente save(Ingrediente entity) throws ServiceException {
+        //Se valida que el tipo de rubro sea propio de un ingrediente, si no lo es lanzará un error.
+        boolean isIngredient = true;
+        if(entity != null){
+            if(entity.getRubro()!=null){
+                if(entity.getRubro().getIngredientOwner()!=null){
+                    isIngredient = entity.getRubro().getIngredientOwner();
+                }
+            }
+        }
+        try {
+            if(!isIngredient)
+                throw new ServiceException("El rubro indicado no pertenece a los ingredientes");
+            entity = genericRepository.save(entity);
+            return entity;
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override

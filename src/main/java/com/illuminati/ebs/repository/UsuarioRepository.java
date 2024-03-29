@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
@@ -44,10 +45,15 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
             nativeQuery = true)
     List<Object[]> findRankingUsuarioPedidos();
 
-    @Query("SELECT u FROM Usuario u WHERE u.rol.id = 5")
+    @Query("SELECT u FROM Usuario u WHERE u.rol.nombreRol = 'Cliente'")
     List<Usuario> findAllClientes();
 
-    @Query("SELECT u FROM Usuario u WHERE u.rol.id IN (1, 2, 3, 4)")
+    @Query("SELECT u FROM Usuario u WHERE u.rol.nombreRol != 'Cliente'")
     List<Usuario> findAllEmpleados();
+
+    @Query("SELECT u FROM Usuario u WHERE u.email = :email AND u.rol.nombreRol = 'Cliente'")
+    Optional<Usuario> findByEmailAndCliente(@Param("email") String email);
+
+
 
 }

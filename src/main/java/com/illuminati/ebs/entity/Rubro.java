@@ -14,14 +14,19 @@ public class Rubro extends Base {
     @Column(name = "nombre")
     private String nombre;
 
+    @Column(name="ingredientOwner")
+    private Boolean ingredientOwner;
+
     @ManyToOne
     @JoinColumn(name = "id_rubro_padre")
-    @JsonBackReference // Evita la serialización en esta dirección
     private Rubro rubroPadre;
 
     @OneToMany(mappedBy = "rubroPadre", fetch = FetchType.LAZY)
     @JsonIgnore // Ignorar la propiedad "rubrosHijos" en la serialización
     private List<Rubro> rubrosHijos;
+
+
+
 }
 
 

@@ -31,8 +31,8 @@ public class Producto extends Base{
     @Column(name = "es_bebida")
     private Boolean esBebida;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore // Ignorar la propiedad "producto" en la serialización de Producto_Ingrediente
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    //@JsonIgnore // Ignorar la propiedad "producto" en la serialización de Producto_Ingrediente
     private List<Producto_Ingrediente> productosIngredientes = new ArrayList<>();
 
     @OneToOne

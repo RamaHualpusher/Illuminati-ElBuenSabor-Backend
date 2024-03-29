@@ -1,6 +1,7 @@
 package com.illuminati.ebs.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,6 +11,8 @@ import lombok.Data;
 public class Producto_Ingrediente extends Base{
     @ManyToOne
     @JoinColumn(name = "id_producto")
+    @JsonIgnore
+    //Se podría ignorar ésta propiedad para hacer el GET desde producto y mostrar
     private Producto producto;
 
     @ManyToOne

@@ -4,13 +4,16 @@ import com.illuminati.ebs.dto.ProductoDto;
 import com.illuminati.ebs.dto.ProductoRanking;
 import com.illuminati.ebs.entity.Ingrediente;
 import com.illuminati.ebs.entity.Producto;
+import com.illuminati.ebs.entity.Producto_Ingrediente;
 import com.illuminati.ebs.entity.Rubro;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.mapper.ProductoMapper;
 import com.illuminati.ebs.repository.ProductoRepository;
+import com.illuminati.ebs.repository.Producto_IngredienteRepository;
 import com.illuminati.ebs.service.ProductoService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +24,41 @@ import java.util.stream.Collectors;
 public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> implements ProductoService {
 
     private final ProductoRepository repository;
+    private final Producto_IngredienteRepository productoIngredienteRepository;
 
-    public ProductoServiceImpl(ProductoRepository repository) {
+    public ProductoServiceImpl(ProductoRepository repository, Producto_IngredienteRepository productoIngredienteRepository) {
         super(repository);
         this.repository = repository;
+        this.productoIngredienteRepository = productoIngredienteRepository; // Inyecta el repositorio de Producto_Ingrediente
     }
+
+    @Override
+    @Transactional(rollbackFor = ServiceException.class) // Anotación para controlar la transacción
+    public Producto save(Producto entity) throws ServiceException {
+        try {
+            // Guardar el producto
+            entity = genericRepository.save(entity);
+            entity.getRubro().setIngredientOwner(false);
+            // Asignar el producto a cada Producto_Ingrediente y guardarlos
+            for (Producto_Ingrediente pi : entity.getProductosIngredientes()) {
+                pi.setProducto(entity);
+                pi = productoIngredienteRepository.save(pi);
+    //            // Forzar un error para probar el rollback
+    //            if (pi.getId() == 1) {
+    //                throw new ServiceException("Error forzado para probar el rollback");
+    //            }
+            }
+
+            return entity;
+        } catch (ServiceException e) {
+            // Si ocurre una ServiceException, relanzarla para realizar el rollback
+            throw e;
+        } catch (Exception e) {
+            // Si ocurre otra excepción, lanzar una ServiceException con código de estado INTERNAL_SERVER_ERROR
+            throw new ServiceException("Error al guardar el producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @Override
     public List<ProductoRanking> findTopSellingProducts() throws ServiceException {

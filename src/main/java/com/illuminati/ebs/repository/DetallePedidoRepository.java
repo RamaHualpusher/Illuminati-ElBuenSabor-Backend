@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DetallePedidoRepository extends GenericRepository<DetallePedido, Long>{
+    List<DetallePedido> findByPedidoId(Long pedidoId);
 }

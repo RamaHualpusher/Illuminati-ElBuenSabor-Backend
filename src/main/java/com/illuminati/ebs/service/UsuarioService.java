@@ -13,4 +13,7 @@ public interface UsuarioService extends GenericService<Usuario, Long> {
 
     List<Usuario> obtenerListaEmpleados() throws ServiceException;
 
+    public Usuario buscarClientePorEmail(String email) throws ServiceException;
+    public Usuario crearClienteSiNoExiste(Usuario usuario) throws ServiceException;
+
 }

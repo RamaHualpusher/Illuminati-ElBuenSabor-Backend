@@ -11,7 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class RolServiceImpl extends GenericServiceImpl<Rol, Long> implements RolService {
 
+    private final RolRepository repository;
+
     public RolServiceImpl(RolRepository repository) {
         super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public Rol findByNombreRol(String nombreRol) {
+        return repository.findByNombreRol(nombreRol);
     }
 }

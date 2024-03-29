@@ -9,7 +9,6 @@ public class PedidoDto {
     private Long id;
     private Integer numeroPedido;
     private Date horaEstimadaFin;
-    private String tipoEnvio;
     private boolean esDelivery;
     private boolean esEfectivo;
     private String estadoPedido;
