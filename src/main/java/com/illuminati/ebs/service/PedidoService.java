@@ -12,4 +12,5 @@ public interface PedidoService extends GenericService<Pedido, Long>{
     List<Pedido> findPedidosByUsuarioId(Long usuarioId);
 
     public Optional<PedidoDto> getPedidoCompletoById(Long pedidoId);
+    List<Pedido> findPedidosByEstado(String estadoPedido);
 }

@@ -16,4 +16,6 @@ public interface PedidoRepository extends GenericRepository<Pedido, Long>{
 
     @Query("SELECT p FROM Pedido p JOIN FETCH p.detallesPedidos dp JOIN FETCH dp.producto WHERE p.id = :pedidoId")
     Optional<PedidoDto> findPedidoWithDetallesAndProductosById(@Param("pedidoId") Long pedidoId);
+    @Query("SELECT p FROM Pedido p WHERE p.estadoPedido = :estadoPedido")
+    List<Pedido> findByEstadoPedido(@Param("estadoPedido") String estadoPedido);
 }

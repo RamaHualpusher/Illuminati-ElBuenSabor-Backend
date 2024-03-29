@@ -39,6 +39,10 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     public Optional<PedidoDto> getPedidoCompletoById(Long pedidoId) {
         return repository.findPedidoWithDetallesAndProductosById(pedidoId);
     }
+    @Override
+    public List<Pedido> findPedidosByEstado(String estadoPedido) {
+        return repository.findByEstadoPedido(estadoPedido);
+    }
 
     @Override
     @Transactional

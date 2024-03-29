@@ -29,5 +29,11 @@ public class PedidoController extends GenericController<Pedido, Long>{
     public List<Pedido> getPedidosByUsuarioId(@PathVariable Long usuarioId) {
         return pedidoService.findPedidosByUsuarioId(usuarioId);
     }
+    @GetMapping("/estado/{estadoPedido}")
+    public List<Pedido> getPedidosByEstado(@PathVariable String estadoPedido) {
+        String estadoPedidoSinEspacios = estadoPedido.replace("_", " "); // Reemplaza los guiones bajos con espacios
+        return pedidoService.findPedidosByEstado(estadoPedidoSinEspacios);
+    }
+
 
 }
