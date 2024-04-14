@@ -64,6 +64,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
 
             // Guardar los detalles del pedido
             for (DetallePedido detalle : entity.getDetallesPedidos()) {
+                detalle.setActivo(true);
                 detalle.setPedido(entity); // Establece la relación bidireccional
                 detallePedidoService.save(detalle);
             }
@@ -100,7 +101,6 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         Optional<Pedido> entity = repository.findById(id);
         if(entity.isPresent()) {
             Pedido pedido = entity.get();
-            //Aca validamos lo que queramos
         }
         try {
             return genericRepository.findById(id)
