@@ -2,13 +2,12 @@ package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.PedidoDto;
 import com.illuminati.ebs.entity.DetallePedido;
+import com.illuminati.ebs.entity.Ingrediente;
 import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.repository.PedidoRepository;
-import com.illuminati.ebs.service.DetallePedidoService;
-import com.illuminati.ebs.service.PedidoService;
-import com.illuminati.ebs.service.UsuarioService;
+import com.illuminati.ebs.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,11 +23,17 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     private final UsuarioService usuarioService;
     private final DetallePedidoService detallePedidoService; // Inyecta el servicio de detalles de pedido
 
-    public PedidoServiceImpl(PedidoRepository repository, UsuarioService usuarioService, DetallePedidoService detallePedidoService) {
+    private final IngredienteService ingredienteService;
+
+    private final ProductoService productoService;
+
+    public PedidoServiceImpl(PedidoRepository repository, UsuarioService usuarioService, DetallePedidoService detallePedidoService, IngredienteService ingredienteService, ProductoService productoService) {
         super(repository);
         this.repository = repository;
         this.usuarioService = usuarioService;
         this.detallePedidoService = detallePedidoService; // Inicializa el servicio de detalles de pedido
+        this.ingredienteService = ingredienteService;
+        this.productoService = productoService;
     }
 
     @Override
@@ -110,5 +115,11 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         } catch (Exception e) {
             throw new ServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+}
+
+    public void reducirIngrediente(Long idIngrediente, Integer cantidad){
+
+
     }
 }

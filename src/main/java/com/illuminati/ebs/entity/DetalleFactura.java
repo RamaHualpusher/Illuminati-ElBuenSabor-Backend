@@ -20,6 +20,15 @@ public class DetalleFactura extends Base{
     @Column(name = "nombre-producto")
     private String nombreProducto;
     @Column(name = "precio-producto")
+  
+    @Transient
+    @Column(name = "subtotal")
+    private Double subtotal;
+
+    @Column(name = "nombre_producto")
+    private String nombreProducto;
+  
+    @Column(name = "precio_producto")
     private Double precioProducto;
 
     @ManyToOne
@@ -27,4 +36,11 @@ public class DetalleFactura extends Base{
     @JoinColumn(name = "id_factura")
     private Factura factura;
 
+    public Double getSubtotal() {
+        if(this.precioProducto != null && this.cantidad != null) {
+            return this.cantidad * this.precioProducto;
+        }else {
+            return 0.0;
+        }
+    }
 }

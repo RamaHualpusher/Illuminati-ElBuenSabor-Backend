@@ -34,3 +34,4 @@ public class ProductoIngredienteServiceImpl extends GenericServiceImpl<Producto_
         }
     }
 }
+
