@@ -14,5 +14,4 @@ public class MercadoPagoDatosServiceImpl extends GenericServiceImpl<MercadoPagoD
         super(repository);
     }
 
-
 }

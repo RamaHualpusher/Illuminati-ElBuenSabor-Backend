@@ -116,6 +116,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             throw new ServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+}
 
     public void reducirIngrediente(Long idIngrediente, Integer cantidad){
 

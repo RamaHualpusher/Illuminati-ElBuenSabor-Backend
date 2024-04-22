@@ -33,6 +33,5 @@ public class ProductoIngredienteServiceImpl extends GenericServiceImpl<Producto_
             throw new ServiceException(e.getMessage());
         }
     }
-
-
 }
+
