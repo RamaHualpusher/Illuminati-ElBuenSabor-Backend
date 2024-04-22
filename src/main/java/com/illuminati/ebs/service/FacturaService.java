@@ -5,5 +5,4 @@ import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.exception.ServiceException;
 
 public interface FacturaService extends GenericService<Factura,Long>{
-    public Factura saveFactura(Pedido pedido) throws ServiceException;
 }

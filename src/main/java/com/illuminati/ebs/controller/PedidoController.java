@@ -20,7 +20,6 @@ public class PedidoController extends GenericController<Pedido, Long>{
 
     @Autowired
     public PedidoController(PedidoService pedidoService) {
-        //agregue super(pedidoService);
         super(pedidoService);
         this.pedidoService = pedidoService;
     }
