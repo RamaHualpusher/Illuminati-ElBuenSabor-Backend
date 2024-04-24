@@ -38,6 +38,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
 
     @Override
     public List<Pedido> findPedidosByUsuarioId(Long usuarioId) {
+
         return repository.findByUsuarioId(usuarioId);
     }
     @Override
@@ -46,6 +47,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     }
     @Override
     public List<Pedido> findPedidosByEstado(String estadoPedido) {
+
         return repository.findByEstadoPedido(estadoPedido);
     }
 
@@ -116,10 +118,13 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             throw new ServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //    public void reducirIngrediente(Long idIngrediente, Integer cantidad){
+//
+//
+//    }
+
 }
 
-    public void reducirIngrediente(Long idIngrediente, Integer cantidad){
 
 
-    }
-}

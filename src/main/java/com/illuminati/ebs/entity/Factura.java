@@ -42,18 +42,13 @@ public class Factura extends Base{
     @JoinColumn(name = "pedido_id", unique = true)
     //@JsonIgnore
     private Pedido pedido;
-    }
 
-    @JoinColumn(name = "id_pedido", unique = true)
-    //@JsonIgnore
-    private Pedido pedido;
-
-    public Double getTotal() {
-        Double total = 0.0;
-        for (DetalleFactura detalleFactura : detalleFactura) {
-            total += detalleFactura.getSubtotal();
-        }
-        return total;
+public Double getTotal() {
+    Double total = 0.0;
+    for (DetalleFactura detalleFactura : detalleFactura) {
+        total += detalleFactura.getSubtotal();
     }
+    return total;
+}
 
 }

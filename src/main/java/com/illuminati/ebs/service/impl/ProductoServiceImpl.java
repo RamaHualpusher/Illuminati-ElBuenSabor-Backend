@@ -146,67 +146,6 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
             throw new ServiceException("Error al actualizar el producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @Override
-    @Transactional(rollbackFor = ServiceException.class)
-    public Producto update(Producto entity) throws ServiceException {
-        try {
-            // Verificar si el producto existe
-            Producto existingProduct = findById(entity.getId());
-
-            // Actualizar campos del producto
-            existingProduct.setNombre(entity.getNombre());
-            existingProduct.setTiempoEstimadoCocina(entity.getTiempoEstimadoCocina());
-            existingProduct.setDenominacion(entity.getDenominacion());
-            existingProduct.setImagen(entity.getImagen());
-            existingProduct.setStockMinimo(entity.getStockMinimo());
-            existingProduct.setStockActual(entity.getStockActual());
-            existingProduct.setPreparacion(entity.getPreparacion());
-            existingProduct.setPrecio(entity.getPrecio());
-            existingProduct.setEsBebida(entity.getEsBebida());
-            existingProduct.setRubro(entity.getRubro());
-
-            // Identificar ingredientes eliminados o actualizados
-            List<Producto_Ingrediente> newIngredientes = entity.getProductosIngredientes();
-            List<Producto_Ingrediente> existingIngredientes = existingProduct.getProductosIngredientes();
-
-            // Eliminar relaciones con ingredientes eliminados o actualizar cantidad en ingredientes existentes
-            existingIngredientes.removeIf(existingIngrediente -> {
-                Optional<Producto_Ingrediente> matchingIngrediente = newIngredientes.stream()
-                        .filter(newIngrediente -> newIngrediente.getId().equals(existingIngrediente.getId()))
-                        .findFirst();
-
-                if (matchingIngrediente.isPresent()) {
-                    // Actualizar la cantidad si ha cambiado
-                    existingIngrediente.setCantidad(matchingIngrediente.get().getCantidad());
-                    return false; // No eliminar el ingrediente
-                } else {
-                    // Eliminar el ingrediente que ya no está presente en la lista de nuevos ingredientes
-                    productoIngredienteRepository.delete(existingIngrediente);
-                    return true; // Eliminar el ingrediente
-                }
-            });
-
-            // Agregar nuevos ingredientes y establecer la relación con el producto
-            for (Producto_Ingrediente newIngrediente : newIngredientes) {
-                if (!existingIngredientes.contains(newIngrediente)) {
-                    newIngrediente.setProducto(existingProduct);
-                    newIngrediente.setActivo(true);
-                    productoIngredienteRepository.save(newIngrediente);
-                }
-            }
-
-            // Guardar el producto actualizado
-            return genericRepository.save(existingProduct);
-        } catch (ServiceException e) {
-            // Si ocurre una ServiceException, relanzarla para realizar el rollback
-            throw e;
-        } catch (Exception e) {
-            // Si ocurre otra excepción, lanzar una ServiceException con código de estado INTERNAL_SERVER_ERROR
-            throw new ServiceException("Error al actualizar el producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
 
     @Override
     public List<ProductoRanking> findTopSellingProducts() throws ServiceException {

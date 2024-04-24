@@ -1,18 +1,15 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.RankingUsuarioPedido;
-import com.illuminati.ebs.dto.UsuarioDto;
 import com.illuminati.ebs.entity.Domicilio;
 import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.entity.Rol;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ServiceException;
-import com.illuminati.ebs.mapper.UsuarioMapper;
 import com.illuminati.ebs.repository.DomicilioRepository;
 import com.illuminati.ebs.repository.RolRepository;
 import com.illuminati.ebs.repository.UsuarioRepository;
 import com.illuminati.ebs.service.UsuarioService;
-import com.illuminati.ebs.service.impl.GenericServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -22,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implements UsuarioService {
@@ -210,13 +206,34 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     }
 
     @Override
+    @Transactional
     public void guardarDireccionUsuario(Long usuarioId, Domicilio domicilio) throws ServiceException {
         try {
+            // Verifica si el usuario existe
             Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
             if (usuarioOptional.isPresent()) {
                 Usuario usuario = usuarioOptional.get();
-                usuario.setDomicilio(domicilio);
-                usuarioRepository.save(usuario);
+
+                // Verifica si el usuario ya tiene un domicilio
+                if (usuario.getDomicilio() != null) {
+                    throw new ServiceException("El usuario ya tiene asignada una dirección", HttpStatus.BAD_REQUEST);
+                }
+
+                // Verifica si la dirección es válida
+                if (domicilio.getCalle() == null || domicilio.getNumero() == null || domicilio.getLocalidad() == null) {
+                    throw new ServiceException("La dirección proporcionada no es válida", HttpStatus.BAD_REQUEST);
+                }
+
+                Domicilio nuevodomicilio = new Domicilio();
+                // Setea el estado activo del domicilio
+                nuevodomicilio.setActivo(true);
+                nuevodomicilio.setCalle(domicilio.getCalle());
+                nuevodomicilio.setNumero(domicilio.getNumero());
+                nuevodomicilio.setLocalidad(domicilio.getLocalidad());
+                domicilioRepository.save(nuevodomicilio);
+
+                // Asigna el domicilio al usuario
+                usuario.setDomicilio(nuevodomicilio);
             } else {
                 throw new ServiceException("No se encontró el usuario con el ID proporcionado", HttpStatus.NOT_FOUND);
             }

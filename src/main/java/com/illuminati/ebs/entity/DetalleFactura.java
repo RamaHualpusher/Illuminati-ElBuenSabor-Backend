@@ -14,19 +14,12 @@ public class DetalleFactura extends Base{
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Column(name = "subtotal")
-    private Double subtotal;
-
     @Column(name = "nombre-producto")
     private String nombreProducto;
-    @Column(name = "precio-producto")
   
     @Transient
     @Column(name = "subtotal")
     private Double subtotal;
-
-    @Column(name = "nombre_producto")
-    private String nombreProducto;
   
     @Column(name = "precio_producto")
     private Double precioProducto;

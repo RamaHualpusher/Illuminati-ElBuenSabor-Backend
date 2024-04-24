@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequestMapping("/api/pedido")
 @CrossOrigin(origins = "*")
 public class PedidoController extends GenericController<Pedido, Long>{
-    //agregue "extends GenericController<Pedido, Long>{"
     private final PedidoService pedidoService;
 
     @Autowired
@@ -33,6 +32,4 @@ public class PedidoController extends GenericController<Pedido, Long>{
         String estadoPedidoSinEspacios = estadoPedido.replace("_", " "); // Reemplaza los guiones bajos con espacios
         return pedidoService.findPedidosByEstado(estadoPedidoSinEspacios);
     }
-
-
 }
