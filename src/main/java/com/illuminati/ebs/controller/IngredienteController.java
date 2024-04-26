@@ -32,9 +32,9 @@ public class IngredienteController extends GenericController<Ingrediente, Long>{
     }
 
     @PutMapping("/{ingredienteId}/subtractStock/{cantidad}")
-    public ResponseEntity<?> subtractStock(@PathVariable Long ingredienteId, @PathVariable Integer cantidad) {
+    public ResponseEntity<?> subtractStock(@RequestBody Ingrediente ingredienteBody, @PathVariable Integer cantidad) {
         try {
-            Ingrediente ingrediente = service.subtractStock(ingredienteId, cantidad);
+            Ingrediente ingrediente = service.subtractStock(ingredienteBody, cantidad);
             return new ResponseEntity<>(ingrediente, HttpStatus.OK);
         } catch (ServiceException e) {
             return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());

@@ -1,10 +1,7 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.PedidoDto;
-import com.illuminati.ebs.entity.DetallePedido;
-import com.illuminati.ebs.entity.Ingrediente;
-import com.illuminati.ebs.entity.Pedido;
-import com.illuminati.ebs.entity.Usuario;
+import com.illuminati.ebs.entity.*;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.repository.PedidoRepository;
 import com.illuminati.ebs.service.*;
@@ -13,15 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implements PedidoService {
 
     private final PedidoRepository repository;
     private final UsuarioService usuarioService;
-    private final DetallePedidoService detallePedidoService; // Inyecta el servicio de detalles de pedido
+    private final DetallePedidoService detallePedidoService;
 
     private final IngredienteService ingredienteService;
 
@@ -31,7 +27,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         super(repository);
         this.repository = repository;
         this.usuarioService = usuarioService;
-        this.detallePedidoService = detallePedidoService; // Inicializa el servicio de detalles de pedido
+        this.detallePedidoService = detallePedidoService;
         this.ingredienteService = ingredienteService;
         this.productoService = productoService;
     }
@@ -58,23 +54,31 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
                 throw new ServiceException("La hora estimada de fin no puede ser nula.");
             }
 
-            // Cargar el usuario desde la base de datos utilizando el servicio de Usuario
-            Usuario usuario = usuarioService.findById(entity.getUsuario().getId());
+            if(haySuficienteStock(entity.getDetallesPedidos())){
+                reducirStock(entity.getDetallesPedidos());
 
-            // Asignar el usuario al pedido
-            entity.setUsuario(usuario);
+                // Cargar el usuario desde la base de datos utilizando el servicio de Usuario
+                Usuario usuario = usuarioService.findById(entity.getUsuario().getId());
 
-            // Guardar el pedido
-            entity = genericRepository.save(entity);
+                // Asignar el usuario al pedido
+                entity.setUsuario(usuario);
 
-            // Guardar los detalles del pedido
-            for (DetallePedido detalle : entity.getDetallesPedidos()) {
-                detalle.setActivo(true);
-                detalle.setPedido(entity); // Establece la relación bidireccional
-                detallePedidoService.save(detalle);
+                // Guardar el pedido
+                entity = genericRepository.save(entity);
+
+                // Guardar los detalles del pedido
+                for (DetallePedido detalle : entity.getDetallesPedidos()) {
+                    detalle.setActivo(true);
+                    detalle.setPedido(entity); // Establece la relación bidireccional
+                    detallePedidoService.save(detalle);
+                }
+
+                return entity;
+            }else{
+                throw new ServiceException("Hay ingredientes que no tienen suficiente stock", HttpStatus.BAD_REQUEST);
             }
 
-            return entity;
+
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -117,8 +121,81 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         }
     }
 
-    public void reducirIngrediente(Long idIngrediente, Integer cantidad){
+    public boolean haySuficienteStock(List<DetallePedido> detallesPedidos) throws Exception {
+        List<Producto_Ingrediente> productosIngredientesRequeridos = new ArrayList<>();
+        List<Producto_Ingrediente> listaIngredientesBD = new ArrayList<>();
 
+        // Crear la lista de productosIngredientes requeridos
+        for (DetallePedido detalle : detallesPedidos) {
+            Producto producto = detalle.getProducto();
+            List<Producto_Ingrediente> productosIngredientes = producto.getProductosIngredientes();
+            for (Producto_Ingrediente pi : productosIngredientes) {
+                // Verificar si el producto_ingrediente ya está en la lista de requeridos y sumar cantidades
+                Optional<Producto_Ingrediente> existing = productosIngredientesRequeridos.stream()
+                        .filter(p -> p.getIngrediente().getId().equals(pi.getIngrediente().getId()))
+                        .findFirst();
+                if (existing.isPresent()) {
+                    Producto_Ingrediente existingProductoIngrediente = existing.get();
+                    existingProductoIngrediente.setCantidad(existingProductoIngrediente.getCantidad() + (pi.getCantidad() * detalle.getCantidad()));
+                } else {
+                    // Agregar el nuevo producto_ingrediente requerido
+                    Producto_Ingrediente newProductoIngrediente = new Producto_Ingrediente();
+                    newProductoIngrediente.setIngrediente(pi.getIngrediente());
+                    newProductoIngrediente.setCantidad(pi.getCantidad() * detalle.getCantidad());
+                    productosIngredientesRequeridos.add(newProductoIngrediente);
+                }
+            }
+        }
 
+        for (Producto_Ingrediente piRequeridoControlInicial : productosIngredientesRequeridos) {
+            Ingrediente ingredienteBD = ingredienteService.findById(piRequeridoControlInicial.getIngrediente().getId());
+            Producto_Ingrediente pi = new Producto_Ingrediente();
+            pi.setIngrediente(ingredienteBD);
+            pi.setCantidad(piRequeridoControlInicial.getCantidad());
+            listaIngredientesBD.add(pi);
+            if (ingredienteBD.getStockActual() < piRequeridoControlInicial.getCantidad()) {
+                return false;
+            }
+        }
+        return true;
     }
+    public void reducirStock(List<DetallePedido> detallesPedidos) throws Exception {
+        List<Producto_Ingrediente> productosIngredientesRequeridos = new ArrayList<>();
+        List<Producto_Ingrediente> listaIngredientesBD = new ArrayList<>();
+
+        // Crear la lista de productosIngredientes requeridos
+        for (DetallePedido detalle : detallesPedidos) {
+            Producto producto = detalle.getProducto();
+            List<Producto_Ingrediente> productosIngredientes = producto.getProductosIngredientes();
+            for (Producto_Ingrediente pi : productosIngredientes) {
+                // Verificar si el producto_ingrediente ya está en la lista de requeridos y sumar cantidades
+                Optional<Producto_Ingrediente> existing = productosIngredientesRequeridos.stream()
+                        .filter(p -> p.getIngrediente().getId().equals(pi.getIngrediente().getId()))
+                        .findFirst();
+                if (existing.isPresent()) {
+                    Producto_Ingrediente existingProductoIngrediente = existing.get();
+                    existingProductoIngrediente.setCantidad(existingProductoIngrediente.getCantidad() + (pi.getCantidad() * detalle.getCantidad()));
+                } else {
+                    // Agregar el nuevo producto_ingrediente requerido
+                    Producto_Ingrediente newProductoIngrediente = new Producto_Ingrediente();
+                    newProductoIngrediente.setIngrediente(pi.getIngrediente());
+                    newProductoIngrediente.setCantidad(pi.getCantidad() * detalle.getCantidad());
+                    productosIngredientesRequeridos.add(newProductoIngrediente);
+                }
+            }
+        }
+
+        for (Producto_Ingrediente piRequeridoControlInicial : productosIngredientesRequeridos) {
+            Ingrediente ingredienteBD = ingredienteService.findById(piRequeridoControlInicial.getIngrediente().getId());
+            Producto_Ingrediente pi = new Producto_Ingrediente();
+            pi.setIngrediente(ingredienteBD);
+            pi.setCantidad(piRequeridoControlInicial.getCantidad());
+            listaIngredientesBD.add(pi);
+        }
+
+        for (Producto_Ingrediente ingredienteToSubstract : listaIngredientesBD) {
+            ingredienteService.subtractStock(ingredienteToSubstract.getIngrediente(),ingredienteToSubstract.getCantidad());
+        }
+    }
+
 }

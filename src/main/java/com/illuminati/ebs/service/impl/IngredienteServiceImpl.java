@@ -56,18 +56,8 @@ public class IngredienteServiceImpl extends GenericServiceImpl<Ingrediente, Long
 
     @Override
     @Transactional
-    public Ingrediente subtractStock(Long ingredienteId, Integer cantidad) {
-        if (cantidad <= 0) {
-            throw new ServiceException("La cantidad debe ser un número positivo.", HttpStatus.BAD_REQUEST);
-        }
-
-        Ingrediente ingrediente = findById(ingredienteId);
-
-        if(ingrediente.getStockActual() < cantidad){
-            throw new ServiceException("No hay suficiente stock para restar.", HttpStatus.BAD_REQUEST);
-        }
+    public Ingrediente subtractStock(Ingrediente ingrediente, Integer cantidad) {
         ingrediente.setStockActual(ingrediente.getStockActual() - cantidad);
-
         return save(ingrediente);
     }
 }
