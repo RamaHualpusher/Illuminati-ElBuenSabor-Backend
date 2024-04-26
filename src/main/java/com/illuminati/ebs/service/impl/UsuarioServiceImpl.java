@@ -1,39 +1,38 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.RankingUsuarioPedido;
-import com.illuminati.ebs.dto.UsuarioDto;
 import com.illuminati.ebs.entity.Domicilio;
 import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.entity.Rol;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ServiceException;
-import com.illuminati.ebs.mapper.UsuarioMapper;
+import com.illuminati.ebs.repository.DomicilioRepository;
 import com.illuminati.ebs.repository.RolRepository;
 import com.illuminati.ebs.repository.UsuarioRepository;
 import com.illuminati.ebs.service.UsuarioService;
-import com.illuminati.ebs.service.impl.GenericServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
-
+    private final DomicilioRepository domicilioRepository;
     private static final Logger log = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository, DomicilioRepository domicilioRepository) {
         super(usuarioRepository);
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
+        this.domicilioRepository = domicilioRepository;
     }
     @Override
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException {
@@ -177,13 +176,101 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
         }
     }
 
-
-
     // Método para validar el formato de correo electrónico usando una expresión regular
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         return email != null && pattern.matcher(email).matches();
     }
+
+    @Override
+    public Domicilio obtenerDomicilioUsuarioPorId(Long usuarioId) throws ServiceException {
+        try {
+            // Usa el UsuarioRepository para obtener el usuario por su ID
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                // Retorna el domicilio del usuario si existe
+                return usuario.getDomicilio();
+            } else {
+                // Lanza una excepción si el usuario no se encuentra
+                throw new ServiceException("No se encontró el usuario con el ID proporcionado", HttpStatus.NOT_FOUND);
+            }
+        } catch (DataAccessException e) {
+            // Captura excepciones relacionadas con problemas de acceso a datos
+            throw new ServiceException("Error al acceder a los datos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            // Captura todas las demás excepciones no esperadas
+            throw new ServiceException("Error inesperado al obtener el domicilio del usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void guardarDireccionUsuario(Long usuarioId, Domicilio domicilio) throws ServiceException {
+        try {
+            // Verifica si el usuario existe
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+
+                // Verifica si el usuario ya tiene un domicilio
+                if (usuario.getDomicilio() != null) {
+                    throw new ServiceException("El usuario ya tiene asignada una dirección", HttpStatus.BAD_REQUEST);
+                }
+
+                // Verifica si la dirección es válida
+                if (domicilio.getCalle() == null || domicilio.getNumero() == null || domicilio.getLocalidad() == null) {
+                    throw new ServiceException("La dirección proporcionada no es válida", HttpStatus.BAD_REQUEST);
+                }
+
+                Domicilio nuevodomicilio = new Domicilio();
+                // Setea el estado activo del domicilio
+                nuevodomicilio.setActivo(true);
+                nuevodomicilio.setCalle(domicilio.getCalle());
+                nuevodomicilio.setNumero(domicilio.getNumero());
+                nuevodomicilio.setLocalidad(domicilio.getLocalidad());
+                domicilioRepository.save(nuevodomicilio);
+
+                // Asigna el domicilio al usuario
+                usuario.setDomicilio(nuevodomicilio);
+            } else {
+                throw new ServiceException("No se encontró el usuario con el ID proporcionado", HttpStatus.NOT_FOUND);
+            }
+        } catch (DataAccessException e) {
+            throw new ServiceException("Error al acceder a los datos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new ServiceException("Error inesperado al guardar la dirección del usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void actualizarDireccionUsuario(Long usuarioId, Domicilio domicilio) throws ServiceException {
+        try {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                if(usuario.getDomicilio() != null) {
+                    Long idDomicilio = usuario.getDomicilio().getId();
+                    Optional<Domicilio> domicilioOptional = domicilioRepository.findById(idDomicilio);
+                    if (domicilioOptional.isPresent()){
+                        Domicilio nuevoDomicilio = domicilioOptional.get();
+                        nuevoDomicilio.setCalle(domicilio.getCalle());
+                        nuevoDomicilio.setLocalidad(domicilio.getLocalidad());
+                        nuevoDomicilio.setNumero(domicilio.getNumero());
+                        domicilioRepository.save(nuevoDomicilio);
+                    }
+                    }
+            } else {
+                throw new ServiceException("No se encontró el usuario con el ID proporcionado", HttpStatus.NOT_FOUND);
+            }
+        } catch (DataAccessException e) {
+            throw new ServiceException("Error al acceder a los datos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new ServiceException("Error inesperado al actualizar la dirección del usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

@@ -13,9 +13,11 @@ import java.util.List;
 @Data
 public class Factura extends Base{
 
-
     @Column(name = "es_efectivo")
     private boolean esEfectivo;
+
+    @Column(name = "es_delivery")
+    private boolean esDelivery;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_factura")
@@ -37,16 +39,16 @@ public class Factura extends Base{
     private List<DetalleFactura> detalleFactura = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "id_pedido", unique = true)
+    @JoinColumn(name = "pedido_id", unique = true)
     //@JsonIgnore
     private Pedido pedido;
 
-    public Double getTotal() {
-        Double total = 0.0;
-        for (DetalleFactura detalleFactura : detalleFactura) {
-            total += detalleFactura.getSubtotal();
-        }
-        return total;
+public Double getTotal() {
+    Double total = 0.0;
+    for (DetalleFactura detalleFactura : detalleFactura) {
+        total += detalleFactura.getSubtotal();
     }
+    return total;
+}
 
 }

@@ -76,10 +76,6 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
                 pi.setActivo(true);
                 pi.setProducto(entity);
                 pi = productoIngredienteRepository.save(pi);
-                // Forzar un error para probar el rollback
-//                if (true) {
-//                    throw new ServiceException("Error forzado para probar el rollback");
-//                }
             }
 
             return entity;
@@ -91,8 +87,6 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
             throw new ServiceException("Error al guardar el producto: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
     @Override
     @Transactional(rollbackFor = ServiceException.class)
     public Producto update(Producto entity) throws ServiceException {
@@ -153,8 +147,6 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
         }
     }
 
-
-
     @Override
     public List<ProductoRanking> findTopSellingProducts() throws ServiceException {
         try {
@@ -194,4 +186,3 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
         return save(producto);
     }
 }
-

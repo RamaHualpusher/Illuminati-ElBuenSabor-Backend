@@ -22,8 +22,6 @@ public class DetallePedido extends Base{
     @Transient
     private Integer maxCantidadProducto;
 
-
-
     @Transient
     public Double getSubtotal() {
         if(this.producto.getPrecio() != null && this.cantidad != null) {

@@ -4,18 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "DetalleFactura")
 @Data
 public class DetalleFactura extends Base{
     @Column(name = "cantidad")
     private Integer cantidad;
+
+    @Column(name = "nombre-producto")
+    private String nombreProducto;
+  
     @Transient
     @Column(name = "subtotal")
     private Double subtotal;
-
-    @Column(name = "nombre_producto")
-    private String nombreProducto;
+  
     @Column(name = "precio_producto")
     private Double precioProducto;
 
@@ -31,5 +36,4 @@ public class DetalleFactura extends Base{
             return 0.0;
         }
     }
-
 }

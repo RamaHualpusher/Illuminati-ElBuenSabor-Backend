@@ -34,6 +34,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
 
     @Override
     public List<Pedido> findPedidosByUsuarioId(Long usuarioId) {
+
         return repository.findByUsuarioId(usuarioId);
     }
     @Override
@@ -42,6 +43,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
     }
     @Override
     public List<Pedido> findPedidosByEstado(String estadoPedido) {
+
         return repository.findByEstadoPedido(estadoPedido);
     }
 
@@ -121,6 +123,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         }
     }
 
+
     public boolean haySuficienteStock(List<DetallePedido> detallesPedidos) throws Exception {
         List<Producto_Ingrediente> productosIngredientesRequeridos = new ArrayList<>();
         List<Producto_Ingrediente> listaIngredientesBD = new ArrayList<>();
@@ -198,4 +201,8 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         }
     }
 
+
 }
+
+
+
