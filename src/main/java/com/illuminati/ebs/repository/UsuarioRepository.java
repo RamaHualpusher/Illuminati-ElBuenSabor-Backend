@@ -32,7 +32,7 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "    r.id AS rol_id, " +
                     "    r.activo AS rol_activo, " +
                     "    r.nombre_rol AS rol_nombre_rol, " +
-                    "    p.id AS pedido_id, " +
+                    "    p.id AS id_pedido, " +
                     "    p.estado_pedido AS estado_pedido, " +
                     "    p.fecha_pedido AS fecha_pedido" +
                     "FROM " +

@@ -39,7 +39,7 @@ public class Factura extends Base{
     private List<DetalleFactura> detalleFactura = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "pedido_id", unique = true)
+    @JoinColumn(name = "id_pedido", unique = true)
     //@JsonIgnore
     private Pedido pedido;
 
