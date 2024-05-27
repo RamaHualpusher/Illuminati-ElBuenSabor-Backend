@@ -31,7 +31,7 @@ public class Factura extends Base{
     @Column(name = "total")
     private Double total = 0.0;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
@@ -40,10 +40,10 @@ public class Factura extends Base{
 
     @OneToOne
     @JoinColumn(name = "id_pedido", unique = true)
-    //@JsonIgnore
     private Pedido pedido;
 
-public Double getTotal() {
+    @Transient
+    public Double getTotal() {
     Double total = 0.0;
     for (DetalleFactura detalleFactura : detalleFactura) {
         total += detalleFactura.getSubtotal();

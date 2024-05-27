@@ -21,10 +21,8 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "    u.nombre AS nombre, " +
                     "    u.apellido AS apellido, " +
                     "    u.email AS email, " +
-                    "    u.clave AS clave, " +
                     "    u.telefono AS telefono, " +
                     "    d.id AS domicilio_id, " +
-                    "    d.activo AS domicilio_activo, " +
                     "    d.activo AS domicilio_activo, " +
                     "    d.calle AS calle, " +
                     "    d.numero AS domicilio_numero, " +
@@ -34,15 +32,23 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
                     "    r.nombre_rol AS rol_nombre_rol, " +
                     "    p.id AS id_pedido, " +
                     "    p.estado_pedido AS estado_pedido, " +
-                    "    p.fecha_pedido AS fecha_pedido" +
-                    "FROM " +
+                    "    p.fecha_pedido AS fecha_pedido, " +
+                    "    dp.id AS id_detalle_pedido, " +
+                    "    dp.cantidad AS cantidad, " +
+                    "    prod.id AS producto_id," +
+                    "    prod.precio AS precio " +
+                    " FROM " +
                     "    usuario u " +
-                    "JOIN " +
+                    " JOIN " +
                     "    domicilio d ON u.id_domicilio = d.id " +
-                    "JOIN " +
+                    " JOIN " +
                     "    rol r ON u.id_rol = r.id " +
-                    "LEFT JOIN " +
+                    " LEFT JOIN " +
                     "    pedido p ON p.id_usuario = u.id " +
+                    " LEFT JOIN " +
+                    "    detalle_pedido dp ON dp.id_pedido = p.id " +
+                    " LEFT JOIN " +
+                    "    producto prod ON dp.id_producto = prod.id " +
                     "ORDER BY " +
                     "    u.id, " +
                     "    p.fecha_pedido DESC",

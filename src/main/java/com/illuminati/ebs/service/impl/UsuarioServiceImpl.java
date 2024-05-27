@@ -1,10 +1,7 @@
 package com.illuminati.ebs.service.impl;
 
 import com.illuminati.ebs.dto.RankingUsuarioPedido;
-import com.illuminati.ebs.entity.Domicilio;
-import com.illuminati.ebs.entity.Pedido;
-import com.illuminati.ebs.entity.Rol;
-import com.illuminati.ebs.entity.Usuario;
+import com.illuminati.ebs.entity.*;
 import com.illuminati.ebs.exception.ServiceException;
 import com.illuminati.ebs.repository.DomicilioRepository;
 import com.illuminati.ebs.repository.RolRepository;
@@ -35,35 +32,33 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
         this.domicilioRepository = domicilioRepository;
     }
     @Override
+    @Transactional
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException {
         try {
             List<Object[]> results = usuarioRepository.findRankingUsuarioPedidos();
             Map<Long, RankingUsuarioPedido> usuarioMap = new HashMap<>();
+
             for (Object[] row : results) {
                 Long usuarioId = (Long) row[0];
                 if (!usuarioMap.containsKey(usuarioId)) {
                     Usuario usuario = new Usuario();
-                    usuario.setId(usuarioId);
                     usuario.setActivo((Boolean) row[1]);
                     usuario.setNombre((String) row[2]);
                     usuario.setApellido((String) row[3]);
                     usuario.setEmail((String) row[4]);
-                    usuario.setClave((String) row[5]);
-                    usuario.setTelefono((String) row[6]);
+                    usuario.setTelefono((String) row[5]);
 
                     Domicilio domicilio = new Domicilio();
-                    domicilio.setId((Long) row[7]);
-                    domicilio.setActivo((Boolean) row[8]);
-                    domicilio.setCalle((String) row[9]);
-                    domicilio.setNumero((Integer) row[10]);
-                    domicilio.setLocalidad((String) row[11]);
-                    // Otros campos de domicilio...
+                    domicilio.setId((Long) row[6]);
+                    domicilio.setActivo((Boolean) row[7]);
+                    domicilio.setCalle((String) row[8]);
+                    domicilio.setNumero((Integer) row[9]);
+                    domicilio.setLocalidad((String) row[10]);
 
                     Rol rol = new Rol();
-                    rol.setId((Long) row[12]);
-                    rol.setActivo((Boolean) row[13]);
-                    rol.setNombreRol((String) row[14]);
-                    // Otros campos de rol...
+                    rol.setId((Long) row[11]);
+                    rol.setActivo((Boolean) row[12]);
+                    rol.setNombreRol((String) row[13]);
 
                     RankingUsuarioPedido rankingUsuarioPedido = new RankingUsuarioPedido();
                     rankingUsuarioPedido.setId(usuarioId);
@@ -71,8 +66,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
                     rankingUsuarioPedido.setNombre((String) row[2]);
                     rankingUsuarioPedido.setApellido((String) row[3]);
                     rankingUsuarioPedido.setEmail((String) row[4]);
-                    rankingUsuarioPedido.setClave((String) row[5]);
-                    rankingUsuarioPedido.setTelefono((String) row[6]);
+                    rankingUsuarioPedido.setTelefono((String) row[5]);
                     rankingUsuarioPedido.setDomicilio(domicilio);
                     rankingUsuarioPedido.setRol(rol);
                     rankingUsuarioPedido.setPedidos(new ArrayList<>());
@@ -81,20 +75,33 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
                 }
 
                 Pedido pedido = new Pedido();
-                pedido.setId((Long) row[15]);
-                pedido.setEstadoPedido((String) row[16]);
-                pedido.setFechaPedido((Date) row[17]);
-                // Otros campos de pedido...
+                pedido.setId((Long) row[14]);
+                pedido.setEstadoPedido((String) row[15]);
+                pedido.setFechaPedido((Date) row[16]);
+
+                // Verifica si el detalle del pedido no es nulo
+                Long detallePedidoId = (Long) row[17];
+                if (detallePedidoId != null) {
+                    DetallePedido detallePedido = new DetallePedido();
+                    detallePedido.setId(detallePedidoId);
+                    detallePedido.setCantidad((Integer) row[18]);
+
+                    // Crear un objeto Producto y establecer su ID y precio
+                    Producto producto = new Producto();
+                    producto.setId((Long) row[19]);  // Índice del ID del producto en la consulta SQL
+                    producto.setPrecio((Double) row[20]);  // Índice del precio del producto en la consulta SQL
+
+                    detallePedido.setProducto(producto);
+                    pedido.getDetallesPedidos().add(detallePedido);
+                }
 
                 usuarioMap.get(usuarioId).getPedidos().add(pedido);
             }
 
             return new ArrayList<>(usuarioMap.values());
         } catch (DataAccessException e) {
-            // Captura excepciones relacionadas con problemas de acceso a datos
             throw new ServiceException("Error al acceder a los datos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            // Captura todas las demás excepciones no esperadas
             throw new ServiceException("Error inesperado al obtener el ranking de usuarios por pedidos: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

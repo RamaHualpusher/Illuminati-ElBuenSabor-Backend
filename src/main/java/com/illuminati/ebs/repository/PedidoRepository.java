@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface PedidoRepository extends GenericRepository<Pedido, Long>{
     @Query("SELECT p FROM Pedido p WHERE p.usuario.id = :usuarioId")
     List<Pedido> findByUsuarioId(@Param("usuarioId") Long usuarioId);
-
     @Query("SELECT p FROM Pedido p JOIN FETCH p.detallesPedidos dp JOIN FETCH dp.producto WHERE p.id = :pedidoId")
     Optional<PedidoDto> findPedidoWithDetallesAndProductosById(@Param("pedidoId") Long pedidoId);
     @Query("SELECT p FROM Pedido p WHERE p.estadoPedido = :estadoPedido")

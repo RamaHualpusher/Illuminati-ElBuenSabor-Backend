@@ -1,10 +1,10 @@
 package com.illuminati.ebs.service;
 
 import com.illuminati.ebs.entity.MercadoPagoDatos;
-import org.springframework.http.ResponseEntity;
+import com.illuminati.ebs.entity.Pedido;
+import com.mercadopago.exceptions.MPException;
 
-public interface MercadoPagoDatosService extends GenericService<MercadoPagoDatos, Long>{
-
-//    public ResponseEntity<String> crearPreferenciaMercadoPago(MercadoPagoDatos mpd);
-
+public interface MercadoPagoDatosService extends GenericService<MercadoPagoDatos, Long> {
+    void init() throws MPException;
+    String createPreference(Pedido pedido) throws MPException;
 }

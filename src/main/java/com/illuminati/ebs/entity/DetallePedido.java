@@ -10,15 +10,19 @@ import lombok.Data;
 public class DetallePedido extends Base{
     @Column(name = "cantidad")
     private Integer cantidad;
+
     @Transient
     private Double subtotal;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
+
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
+
     @Transient
     private Integer maxCantidadProducto;
 
