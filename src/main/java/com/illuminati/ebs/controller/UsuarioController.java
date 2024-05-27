@@ -1,7 +1,6 @@
 package com.illuminati.ebs.controller;
 
 import com.illuminati.ebs.dto.RankingUsuarioPedido;
-import com.illuminati.ebs.dto.UsuarioDto;
 import com.illuminati.ebs.entity.Domicilio;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.exception.ErrorResponse;
@@ -24,6 +23,7 @@ public class UsuarioController extends GenericController<Usuario, Long> {
         this.service = service;
     }
 
+    //no uso a ranking, lo manejo todo con pedido
     @GetMapping("/ranking")
     public ResponseEntity<?> getTopUserRanking() {
         try {

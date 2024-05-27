@@ -79,8 +79,6 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             }else{
                 throw new ServiceException("Hay ingredientes que no tienen suficiente stock", HttpStatus.BAD_REQUEST);
             }
-
-
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -200,8 +198,6 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             ingredienteService.subtractStock(ingredienteToSubstract.getIngrediente(),ingredienteToSubstract.getCantidad());
         }
     }
-
-
 }
 
 

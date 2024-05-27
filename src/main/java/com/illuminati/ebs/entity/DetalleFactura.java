@@ -29,6 +29,7 @@ public class DetalleFactura extends Base{
     @JoinColumn(name = "id_factura")
     private Factura factura;
 
+    @Transient
     public Double getSubtotal() {
         if(this.precioProducto != null && this.cantidad != null) {
             return this.cantidad * this.precioProducto;

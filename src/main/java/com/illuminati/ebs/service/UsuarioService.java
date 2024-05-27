@@ -9,6 +9,7 @@ import com.illuminati.ebs.exception.ServiceException;
 import java.util.List;
 
 public interface UsuarioService extends GenericService<Usuario, Long> {
+    //modifique aca que tenia <RankingUsuarioPedido>, que utiliza una dto, cuando deberia utilizar los objetos nada mas de usuario, pedido, rol y dopmicilio
     public List<RankingUsuarioPedido> findRankingUsuarioPedidos() throws ServiceException;
     List<Usuario> obtenerListaClientes() throws ServiceException;
 
