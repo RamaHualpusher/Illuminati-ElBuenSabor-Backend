@@ -23,6 +23,20 @@ public class UsuarioController extends GenericController<Usuario, Long> {
         this.service = service;
     }
 
+    @PostMapping("/empleados")
+    public ResponseEntity<?> crearEmpleado(@RequestBody Usuario usuario) {
+        try {
+            // Verificar que no es un cliente
+            if ("Cliente".equalsIgnoreCase(usuario.getRol().getNombreRol())) {
+                throw new ServiceException("No se puede crear un empleado con rol de cliente", HttpStatus.BAD_REQUEST);
+            }
+            Usuario empleadoCreado = service.crearEmpleado(usuario);
+            return ResponseEntity.ok(empleadoCreado);
+        } catch (ServiceException e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getStatus().value(), e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errorResponse);
+        }
+    }
     //no uso a ranking, lo manejo todo con pedido
     @GetMapping("/ranking")
     public ResponseEntity<?> getTopUserRanking() {
@@ -124,4 +138,6 @@ public class UsuarioController extends GenericController<Usuario, Long> {
             return ResponseEntity.status(e.getStatus()).body(errorResponse);
         }
     }
+
+
 }

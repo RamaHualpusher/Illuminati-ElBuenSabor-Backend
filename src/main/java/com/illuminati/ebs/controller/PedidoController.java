@@ -8,6 +8,7 @@ import com.illuminati.ebs.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -28,6 +29,7 @@ public class PedidoController extends GenericController<Pedido, Long>{
         this.mercadoPagoDatosService = mercadoPagoDatosService;
     }
 
+    @PreAuthorize("hasRole('Admin') or hasRole('Cocinero')")
     @GetMapping("/usuario/{usuarioId}")
     public List<Pedido> getPedidosByUsuarioId(@PathVariable Long usuarioId) {
         return pedidoService.findPedidosByUsuarioId(usuarioId);

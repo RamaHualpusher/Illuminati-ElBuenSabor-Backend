@@ -68,4 +68,6 @@ public interface UsuarioRepository extends GenericRepository<Usuario, Long> {
     @Query("UPDATE Usuario u SET u.domicilio = :domicilio WHERE u.id = :usuarioId")
     void actualizarDireccionUsuario(@Param("usuarioId") Long usuarioId, @Param("domicilio") Domicilio domicilio);
 
+    @Query("SELECT u FROM Usuario u WHERE u.email = :email AND NOT u.rol.nombreRol = 'Cliente'")
+    Optional<Usuario> findByEmailExcludingCliente(@Param("email") String email);
 }
