@@ -5,10 +5,7 @@ import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.repository.GenericRepository;
 import com.illuminati.ebs.service.MercadoPagoDatosService;
 import com.mercadopago.MercadoPagoConfig;
-import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
-import com.mercadopago.client.preference.PreferenceClient;
-import com.mercadopago.client.preference.PreferenceItemRequest;
-import com.mercadopago.client.preference.PreferenceRequest;
+import com.mercadopago.client.preference.*;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
@@ -39,26 +36,31 @@ public class MercadoPagoDatosServiceImpl extends GenericServiceImpl<MercadoPagoD
         try {
             MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
+            // Crear el item de la preferencia
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                     .id(pedido.getId().toString())
                     .title("Pedido de " + pedido.getUsuario().getNombre() + " " + pedido.getUsuario().getApellido())
                     .quantity(1)
                     .unitPrice(new BigDecimal(pedido.getTotal()))
-                    .currencyId("ARG")
+                    .currencyId("ARS")
                     .build();
 
             List<PreferenceItemRequest> items = new ArrayList<>();
             items.add(itemRequest);
 
+            // Crear URLs de retorno
             PreferenceBackUrlsRequest backURL = PreferenceBackUrlsRequest.builder()
-                    .success("http://localhost:5173/mpsuccess")
-                    .pending("http://localhost:5173/mppending")
-                    .failure("http://localhost:5173/mpfailure")
+                    .success("http://localhost:3000/mpsuccess")
+                    .pending("http://localhost:3000/mppending")
+                    .failure("http://localhost:3000/mpfailure")
                     .build();
 
+            // Crear la preferencia
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                     .items(items)
+                    .autoReturn("approved")
                     .backUrls(backURL)
+                    .notificationUrl("https://localhost:3000/confirmacion-pedido")
                     .build();
 
             PreferenceClient client = new PreferenceClient();
@@ -67,8 +69,12 @@ public class MercadoPagoDatosServiceImpl extends GenericServiceImpl<MercadoPagoD
             return preference.getId();
         } catch (MPException e) {
             e.printStackTrace();
+            // Log more details about the exception
+            System.err.println("MPException: " + e.getMessage());
             throw e;
         } catch (MPApiException e) {
+            // Log more details about the API exception
+            System.err.println("MPApiException: " + e.getMessage() + ", status: " + e.getStatusCode());
             throw new RuntimeException(e);
         }
     }
