@@ -29,7 +29,7 @@ public class PedidoController extends GenericController<Pedido, Long>{
         this.mercadoPagoDatosService = mercadoPagoDatosService;
     }
 
-    @PreAuthorize("hasRole('Admin') or hasRole('Cocinero')")
+
     @GetMapping("/usuario/{usuarioId}")
     public List<Pedido> getPedidosByUsuarioId(@PathVariable Long usuarioId) {
         return pedidoService.findPedidosByUsuarioId(usuarioId);
