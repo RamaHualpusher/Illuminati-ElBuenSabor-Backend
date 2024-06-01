@@ -38,6 +38,26 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
     }
 
     @Override
+    public List<Producto> findAll() throws ServiceException {
+        List<Producto> allEntities = super.findAll();
+        allEntities.forEach(entity -> entity.setMaxCantidadProducto(entity.getMaxCantidadProducto()));
+        return allEntities;
+    }
+
+    @Override
+    public Producto findById(Long id) throws ServiceException {
+        Producto producto = super.findById(id);
+        producto.setMaxCantidadProducto(producto.getMaxCantidadProducto());
+        return producto;
+    }
+
+    @Override
+    public List<Producto> findAllActive() throws ServiceException {
+        List<Producto> activeEntities = super.findAllActive();
+        activeEntities.forEach(entity -> entity.setMaxCantidadProducto(entity.getMaxCantidadProducto()));
+        return activeEntities;
+    }
+    @Override
     @Transactional(rollbackFor = ServiceException.class) // Anotación para controlar la transacción
     public Producto save(Producto entity) throws ServiceException {
         Ingrediente ingredienteBebida = null;
@@ -96,6 +116,7 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Long> impl
 
             // Actualizar campos del producto
             existingProduct.setNombre(entity.getNombre());
+            existingProduct.setActivo(entity.getActivo());
             existingProduct.setTiempoEstimadoCocina(entity.getTiempoEstimadoCocina());
             existingProduct.setDenominacion(entity.getDenominacion());
             existingProduct.setImagen(entity.getImagen());

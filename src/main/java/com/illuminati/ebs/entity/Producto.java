@@ -28,6 +28,8 @@ public class Producto extends Base{
     private Double precio;
     @Column(name = "es_bebida")
     private Boolean esBebida;
+    @Transient
+    private Integer maxCantidadProducto;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<Producto_Ingrediente> productosIngredientes = new ArrayList<>();
@@ -35,4 +37,21 @@ public class Producto extends Base{
     @OneToOne
     @JoinColumn(name = "id_rubro")
     private Rubro rubro;
+
+    @Transient
+    public Integer getMaxCantidadProducto() {
+        if (this.productosIngredientes != null) {
+            return calcularCantidadMaximaDeProductoPosible();
+        } else {
+            return 0;
+        }
+    }
+
+    private Integer calcularCantidadMaximaDeProductoPosible() {
+        List<Integer> stockDeIngredientes = new ArrayList<>();
+        for (Producto_Ingrediente productoIngrediente : this.productosIngredientes) {
+            stockDeIngredientes.add(productoIngrediente.getIngrediente().getStockActual() / productoIngrediente.getCantidad());
+        }
+        return stockDeIngredientes.stream().min(Integer::compareTo).orElse(0);
+    }
 }
