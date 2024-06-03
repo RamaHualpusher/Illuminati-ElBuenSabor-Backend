@@ -18,7 +18,7 @@ public class MercadoPagoDatos extends Base{
     @Column(name = "estado")
     private String estado;
 
-    @Column(name = "preference_id")  // Agregar esta línea
+    @Column(name = "preference_id")
     private String preferenceId;
 
     @OneToOne(fetch = FetchType.LAZY)
