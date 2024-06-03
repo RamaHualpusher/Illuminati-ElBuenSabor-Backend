@@ -46,6 +46,11 @@ public class Pedido extends  Base{
         for (DetallePedido detallePedido : detallesPedidos) {
             total += detallePedido.getSubtotal();
         }
+
+        if(esDelivery){
+            return total+500;
+        }
+
         return total;
     }
 }
