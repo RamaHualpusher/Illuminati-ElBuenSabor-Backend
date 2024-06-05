@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/usuario")
@@ -71,6 +73,27 @@ public class UsuarioController extends GenericController<Usuario, Long> {
             return ResponseEntity.status(e.getStatus()).body(errorResponse);
         }
     }
+    @PostMapping("/empleados/email")
+    public ResponseEntity<?> buscarEmpleadoPorEmail(@RequestBody Usuario usuario) {
+        try {
+            if (usuario != null && usuario.getEmail() != null && !usuario.getEmail().isEmpty()) {
+                Usuario empleado = service.buscarEmpleadoPorEmail(usuario.getEmail());
+                if (empleado != null) {
+                    return ResponseEntity.ok(empleado);
+                } else {
+                    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "El usuario empleado con el email proporcionado no existe.");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+                }
+            } else {
+                ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "El usuario proporcionado o su dirección de correo electrónico son inválidos.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+        } catch (ServiceException e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getStatus().value(), e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errorResponse);
+        }
+    }
+
 
     @PostMapping("/clientes/email")
     public ResponseEntity<?> buscarClientePorEmail(@RequestBody Usuario usuario) {
