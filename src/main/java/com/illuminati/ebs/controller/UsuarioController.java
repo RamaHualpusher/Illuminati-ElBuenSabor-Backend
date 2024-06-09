@@ -39,6 +39,20 @@ public class UsuarioController extends GenericController<Usuario, Long> {
             return ResponseEntity.status(e.getStatus()).body(errorResponse);
         }
     }
+
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> updateCliente(@RequestBody Usuario usuario) {
+        try {
+            Usuario usuarioActualizado = service.actualizarEmpleado(usuario);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (ServiceException e) {
+            ErrorResponse errorResponse = new ErrorResponse(e.getStatus().value(), e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(errorResponse);
+        }
+    }
+
+
     //no uso a ranking, lo manejo todo con pedido
     @GetMapping("/ranking")
     public ResponseEntity<?> getTopUserRanking() {

@@ -22,6 +22,8 @@ public interface UsuarioService extends GenericService<Usuario, Long> {
 
     public Usuario crearEmpleado(Usuario usuario) throws ServiceException;
 
+    public Usuario actualizarEmpleado(Usuario usuario) throws ServiceException;
+
     public Domicilio obtenerDomicilioUsuarioPorId(Long usuarioId) throws ServiceException;
 
     public void guardarDireccionUsuario(Long usuarioId, Domicilio domicilio) throws ServiceException;

@@ -27,6 +27,8 @@ public class Usuario extends Base{
     @Column(name="telefono")
     private String telefono;
 
+    @Column(name = "primer_ingreso")
+    private boolean primerIngreso;
 
     @OneToOne
     @JoinColumn(name = "id_domicilio")
