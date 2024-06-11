@@ -36,49 +36,45 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     }
     @Override
     @Transactional
-    public Usuario crearEmpleado(Usuario usuario) throws ServiceException{
+    public Usuario crearEmpleado(Usuario usuario) throws ServiceException {
         // Verificar si el usuario ya existe
         String email = usuario.getEmail();
         Usuario empleadoExistente = buscarEmpleadoPorEmail(email);
         if (empleadoExistente != null) {
-            // Log para informar que el cliente ya existe
             log.info("El usuario con el correo electrónico {} ya existe.", email);
-            // Emitir un error 404 (NOT FOUND) ya que el usuario ya existe
             throw new ServiceException("El usuario con el correo electrónico ya existe", HttpStatus.NOT_FOUND);
         } else {
-            // Validar campos obligatorios
             if (usuario.getNombre() == null || usuario.getApellido() == null || usuario.getEmail() == null || usuario.getRol() == null) {
-                // Log para registrar el error de campos obligatorios faltantes
                 log.error("El usuario proporcionado no tiene todos los campos obligatorios: {}", usuario);
                 throw new ServiceException("El usuario proporcionado no tiene todos los campos obligatorios", HttpStatus.BAD_REQUEST);
             }
 
-            // Validar formato de correo electrónico
             if (!isValidEmail(usuario.getEmail())) {
-                // Log para registrar el error de formato de correo electrónico inválido
                 log.error("El correo electrónico proporcionado no es válido: {}", usuario.getEmail());
                 throw new ServiceException("El correo electrónico proporcionado no es válido", HttpStatus.BAD_REQUEST);
             }
 
-            //Setear estado activo
             usuario.setActivo(true);
-            // Encriptar la contraseña antes de guardar
             usuario.setClave(passwordEncoder.encode(usuario.getClave()));
-            //Setear valor de primer ingreso para empleados no Admin
-            if(!usuario.getRol().getNombreRol().equals("Admin") && !usuario.getRol().getNombreRol().equals("Cliente")){
+            if (!usuario.getRol().getNombreRol().equals("Admin") && !usuario.getRol().getNombreRol().equals("Cliente")) {
                 usuario.setPrimerIngreso(true);
-            }else{
+            } else {
                 usuario.setPrimerIngreso(false);
             }
 
-            // Guardar el nuevo empleado
+            // Guardar el domicilio
+            Domicilio domicilio = usuario.getDomicilio();
+            if (domicilio != null) {
+                domicilio.setActivo(true);
+                Domicilio nuevoDomicilio = domicilioRepository.save(domicilio);
+                usuario.setDomicilio(nuevoDomicilio);
+            }
+
             try {
                 Usuario nuevoEmpleado = usuarioRepository.save(usuario);
-                // Log para registrar la creación exitosa del nuevo empleado
                 log.info("Se creó exitosamente un nuevo empleado con el correo electrónico: {}", nuevoEmpleado.getEmail());
                 return nuevoEmpleado;
             } catch (Exception e) {
-                // Log para registrar el error al crear el empleado
                 log.error("Error al crear el usuario empleado: {}", e.getMessage());
                 throw new ServiceException("Error al crear el usuario empleado: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }

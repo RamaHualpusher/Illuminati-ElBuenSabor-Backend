@@ -28,7 +28,6 @@ public class UsuarioController extends GenericController<Usuario, Long> {
     @PostMapping("/empleados")
     public ResponseEntity<?> crearEmpleado(@RequestBody Usuario usuario) {
         try {
-            // Verificar que no es un cliente
             if ("Cliente".equalsIgnoreCase(usuario.getRol().getNombreRol())) {
                 throw new ServiceException("No se puede crear un empleado con rol de cliente", HttpStatus.BAD_REQUEST);
             }
@@ -39,7 +38,6 @@ public class UsuarioController extends GenericController<Usuario, Long> {
             return ResponseEntity.status(e.getStatus()).body(errorResponse);
         }
     }
-
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> updateCliente(@RequestBody Usuario usuario) {
