@@ -198,6 +198,58 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             ingredienteService.subtractStock(ingredienteToSubstract.getIngrediente(),ingredienteToSubstract.getCantidad());
         }
     }
+    @Transactional
+    public void cancelarPedido(Pedido pedido) throws Exception {
+        Pedido pedidoDB = repository.findById(pedido.getId())
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el pedido con el ID: " + pedido.getId()));
+
+        if (!pedidoDB.getEstadoPedido().equalsIgnoreCase("Cancelado")) {
+            pedidoDB.setEstadoPedido("Cancelado");
+            aumentarStock(pedidoDB.getDetallesPedidos());
+            repository.save(pedidoDB);
+        } else {
+            throw new ServiceException("El pedido ya está cancelado.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void aumentarStock(List<DetallePedido> detallesPedidos) throws Exception {
+        List<Producto_Ingrediente> productosIngredientesADevolver = new ArrayList<>();
+        List<Producto_Ingrediente> listaIngredientesBD = new ArrayList<>();
+
+        // Crear la lista de productosIngredientes a devolver
+        for (DetallePedido detalle : detallesPedidos) {
+            Producto producto = detalle.getProducto();
+            List<Producto_Ingrediente> productosIngredientes = producto.getProductosIngredientes();
+            for (Producto_Ingrediente pi : productosIngredientes) {
+                // Verificar si el producto_ingrediente ya está en la lista de a devolver y sumar cantidades
+                Optional<Producto_Ingrediente> existing = productosIngredientesADevolver.stream()
+                        .filter(p -> p.getIngrediente().getId().equals(pi.getIngrediente().getId()))
+                        .findFirst();
+                if (existing.isPresent()) {
+                    Producto_Ingrediente existingProductoIngrediente = existing.get();
+                    existingProductoIngrediente.setCantidad(existingProductoIngrediente.getCantidad() + (pi.getCantidad() * detalle.getCantidad()));
+                } else {
+                    // Agregar el nuevo producto_ingrediente a devolver
+                    Producto_Ingrediente newProductoIngrediente = new Producto_Ingrediente();
+                    newProductoIngrediente.setIngrediente(pi.getIngrediente());
+                    newProductoIngrediente.setCantidad(pi.getCantidad() * detalle.getCantidad());
+                    productosIngredientesADevolver.add(newProductoIngrediente);
+                }
+            }
+        }
+
+        for (Producto_Ingrediente piADevolverControlInicial : productosIngredientesADevolver) {
+            Ingrediente ingredienteBD = ingredienteService.findById(piADevolverControlInicial.getIngrediente().getId());
+            Producto_Ingrediente pi = new Producto_Ingrediente();
+            pi.setIngrediente(ingredienteBD);
+            pi.setCantidad(piADevolverControlInicial.getCantidad());
+            listaIngredientesBD.add(pi);
+        }
+
+        for (Producto_Ingrediente ingredienteToAdd : listaIngredientesBD) {
+            ingredienteService.addStock(ingredienteToAdd.getIngrediente().getId(), ingredienteToAdd.getCantidad());
+        }
+    }
 }
 
 
