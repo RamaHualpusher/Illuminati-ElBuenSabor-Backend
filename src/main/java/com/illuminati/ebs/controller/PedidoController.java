@@ -39,43 +39,15 @@ public class PedidoController extends GenericController<Pedido, Long>{
         String estadoPedidoSinEspacios = estadoPedido.replace("_", " "); // Reemplaza los guiones bajos con espacios
         return pedidoService.findPedidosByEstado(estadoPedidoSinEspacios);
     }
-//    @PostMapping("/mercadoPago")
-//    public ResponseEntity<?> createPedido(@RequestBody Pedido pedido) throws Exception {
-//        Usuario usuario = pedido.getUsuario();
-//
-//        String nombreUsuario = usuario.getNombre();
-//        String apellidoUsuario = usuario.getApellido();
-//        String emailUsuario = usuario.getEmail();
-//
-//        // Crear preferencia en MercadoPago
-//        String preferenceId = mercadoPagoDatosService.createPreference(
-//                "Pedido de " + nombreUsuario+ " "+ apellidoUsuario,
-//                pedido.getTotal(),
-//                1,
-//                "http://localhost:4200/success",
-//                "http://localhost:4200/failure",
-//                "http://localhost:4200/pending"
-//        );
-//
-//        // Crear objeto de MercadoPagoDatos y asociarlo al pedido
-//        MercadoPagoDatos mercadoPagoDatos = new MercadoPagoDatos();
-//        mercadoPagoDatos.setId(Long.valueOf(preferenceId));
-//        mercadoPagoDatos.setActivo(true);
-//        mercadoPagoDatos.setFechaCreacion(new Date());
-//        mercadoPagoDatos.setEstado("pendiente");
-//        mercadoPagoDatos.setPedido(pedido);
-//
-//        // Asociar MercadoPagoDatos al pedido
-//        pedido.setMercadoPagoDatos(mercadoPagoDatos);
-//
-//        // Guardar pedido con los datos de MercadoPago
-//        Pedido savedPedido = pedidoService.save(pedido);
-//
-//        // Devolver el pedido guardado y el ID de la preferencia
-//        return ResponseEntity.ok(savedPedido);
-//    }
-
-
+    @PostMapping("/cancelar")
+    public ResponseEntity<String> cancelarPedido(@RequestBody Pedido pedido) {
+        try {
+            pedidoService.cancelarPedido(pedido);
+            return new ResponseEntity<>("Pedido cancelado exitosamente.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al cancelar el pedido: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 
 

@@ -14,5 +14,6 @@ public interface PedidoService extends GenericService<Pedido, Long>{
 
     public Optional<PedidoDto> getPedidoCompletoById(Long pedidoId);
     List<Pedido> findPedidosByEstado(String estadoPedido);
+    public void cancelarPedido(Pedido pedido) throws Exception;
 
 }

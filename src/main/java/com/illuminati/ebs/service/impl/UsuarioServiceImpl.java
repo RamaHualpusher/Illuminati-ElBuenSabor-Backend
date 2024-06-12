@@ -114,9 +114,11 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
             if(usuario.getClave()!=null){
                 if(!usuario.getClave().equals("")){
                     // Encriptar la contraseña antes de guardar si ha cambiado
+                    log.info("//////////CAMBIO DE CONTRASEÑA//////////");
+                    log.info("Cambio" + !passwordEncoder.matches(usuario.getClave(),empleadoExistente.getClave()));
                     if (!passwordEncoder.matches(usuario.getClave(),empleadoExistente.getClave())) {
                         empleadoExistente.setClave(passwordEncoder.encode(usuario.getClave()));
-                        usuario.setPrimerIngreso(false);
+                        empleadoExistente.setPrimerIngreso(false);
                     }
                 }
 
