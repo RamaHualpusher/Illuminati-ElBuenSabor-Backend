@@ -111,6 +111,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
             empleadoExistente.setApellido(usuario.getApellido());
             empleadoExistente.setRol(usuario.getRol());
             empleadoExistente.setActivo(usuario.getActivo());
+            empleadoExistente.setTelefono(usuario.getTelefono());
             if(usuario.getClave()!=null){
                 if(!usuario.getClave().equals("")){
                     // Encriptar la contraseña antes de guardar si ha cambiado
