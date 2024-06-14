@@ -41,7 +41,7 @@ public class FacturaServiceImpl extends GenericServiceImpl<Factura, Long> implem
                 entity.setActivo(true);
             }
             // Validar si ya existe una factura con el mismo ID de pedido
-            Optional<Factura> existingFactura = genericRepository.findById(entity.getPedido().getId());
+            Optional<Factura> existingFactura = repository.findByPedidoId(entity.getPedido().getId());
             if (existingFactura.isPresent()) {
                 throw new ServiceException("Ya existe una factura para el pedido con ID: " + entity.getPedido().getId());
             }
