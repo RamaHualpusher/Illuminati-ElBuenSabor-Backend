@@ -19,4 +19,6 @@ public interface PedidoService extends GenericService<Pedido, Long>{
 
     public void aumentarStockIngrediente(List<Ingrediente> ingredientes) throws Exception;
 
+    public void confirmarStockDevuelto(Pedido pedido) throws Exception;
+
 }

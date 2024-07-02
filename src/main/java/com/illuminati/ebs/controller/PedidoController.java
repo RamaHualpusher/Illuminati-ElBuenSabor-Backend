@@ -7,6 +7,7 @@ import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.service.MercadoPagoDatosService;
 import com.illuminati.ebs.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,6 +57,16 @@ public class PedidoController extends GenericController<Pedido, Long>{
             return new ResponseEntity<>("Stock Aumentado Exitosamente.",HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("No se pudo Agregar."+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/confirmarStockDevuelto")
+    public ResponseEntity<String> confirmarStockDevuelto(@RequestBody Pedido pedido){
+        try{
+            pedidoService.confirmarStockDevuelto(pedido);
+            return new ResponseEntity<>("Stock devuelto con exito. ",HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Fallo al devolver",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -286,6 +286,22 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
         }
     }
 
+    public void confirmarStockDevuelto(Pedido pedido) throws Exception{
+        //Buscar pedido por ID en la BD
+        //Si el campo "devuelto" es null o false, setear el valor true
+        //guardar usando el método save del repositorio Pedido
+        Pedido pedidoDB = repository.findById(pedido.getId())
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el pedido con el ID: " + pedido.getId()));
+
+        if (!pedidoDB.getDevuelto().equals(null) || !pedidoDB.getDevuelto()) {
+            pedidoDB.setDevuelto(true);
+            repository.save(pedidoDB);
+        } else {
+            throw new ServiceException("El pedido ya está cancelado.", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }
 
 
