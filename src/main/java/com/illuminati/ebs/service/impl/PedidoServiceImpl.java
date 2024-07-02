@@ -205,7 +205,7 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
 
         if (!pedidoDB.getEstadoPedido().equalsIgnoreCase("Cancelado")) {
             pedidoDB.setEstadoPedido("Cancelado");
-            aumentarStock(pedidoDB.getDetallesPedidos());
+            //aumentarStock(pedidoDB.getDetallesPedidos());
             repository.save(pedidoDB);
         } else {
             throw new ServiceException("El pedido ya está cancelado.", HttpStatus.BAD_REQUEST);
@@ -250,6 +250,42 @@ public class PedidoServiceImpl extends GenericServiceImpl<Pedido, Long> implemen
             ingredienteService.addStock(ingredienteToAdd.getIngrediente().getId(), ingredienteToAdd.getCantidad());
         }
     }
+
+    public void aumentarStockIngrediente(List<Ingrediente> ingredientes) throws Exception {
+        List<Ingrediente> ingredientesADevolver = new ArrayList<>();
+        List<Ingrediente> listaIngredientesBD = new ArrayList<>();
+
+        // Crear la lista de ingredientes a devolver
+        for (Ingrediente ing : ingredientes) {
+            // Verificar si el ingrediente ya está en la lista de a devolver y sumar cantidades
+            Optional<Ingrediente> existing = ingredientesADevolver.stream()
+                    .filter(i -> i.getId().equals(ing.getId()))
+                    .findFirst();
+            if (existing.isPresent()) {
+                Ingrediente existingIngrediente = existing.get();
+                existingIngrediente.setStockActual(existingIngrediente.getStockActual() + ing.getStockActual());
+            } else {
+                // Agregar el nuevo ingrediente a devolver
+                Ingrediente newIngrediente = new Ingrediente();
+                newIngrediente.setId(ing.getId());
+                newIngrediente.setStockActual(ing.getStockActual());
+                ingredientesADevolver.add(newIngrediente);
+            }
+        }
+
+        for (Ingrediente ingADevolverControlInicial : ingredientesADevolver) {
+            Ingrediente ingredienteBD = ingredienteService.findById(ingADevolverControlInicial.getId());
+            Ingrediente ing = new Ingrediente();
+            ing.setId(ingredienteBD.getId());
+            ing.setStockActual(ingADevolverControlInicial.getStockActual());
+            listaIngredientesBD.add(ing);
+        }
+
+        for (Ingrediente ingredienteToAdd : listaIngredientesBD) {
+            ingredienteService.addStock(ingredienteToAdd.getId(), ingredienteToAdd.getStockActual());
+        }
+    }
+
 }
 
 

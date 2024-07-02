@@ -43,8 +43,8 @@ public class IngredienteServiceImpl extends GenericServiceImpl<Ingrediente, Long
     @Override
     @Transactional
     public Ingrediente addStock(Long ingredienteId, Integer cantidad) {
-        if (cantidad <= 0) {
-            throw new ServiceException("La cantidad debe ser un número positivo.", HttpStatus.BAD_REQUEST);
+        if (cantidad < 0) {
+            throw new ServiceException("La cantidad debe ser un mayor a cero.", HttpStatus.BAD_REQUEST);
         }
 
         Ingrediente ingrediente = findById(ingredienteId);

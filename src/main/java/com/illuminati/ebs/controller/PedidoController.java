@@ -2,6 +2,7 @@ package com.illuminati.ebs.controller;
 
 import com.illuminati.ebs.entity.MercadoPagoDatos;
 import com.illuminati.ebs.entity.Pedido;
+import com.illuminati.ebs.entity.Ingrediente;
 import com.illuminati.ebs.entity.Usuario;
 import com.illuminati.ebs.service.MercadoPagoDatosService;
 import com.illuminati.ebs.service.PedidoService;
@@ -46,6 +47,15 @@ public class PedidoController extends GenericController<Pedido, Long>{
             return new ResponseEntity<>("Pedido cancelado exitosamente.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al cancelar el pedido: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/aumentarStockIngrediente")
+    public ResponseEntity<String> aumentarStockIngrediente(@RequestBody List<Ingrediente> ingredientes){
+        try{
+            pedidoService.aumentarStockIngrediente(ingredientes);
+            return new ResponseEntity<>("Stock Aumentado Exitosamente.",HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo Agregar."+e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

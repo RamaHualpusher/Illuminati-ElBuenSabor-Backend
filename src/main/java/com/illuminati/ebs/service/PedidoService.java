@@ -2,6 +2,7 @@ package com.illuminati.ebs.service;
 
 import com.illuminati.ebs.dto.PedidoDto;
 import com.illuminati.ebs.entity.Factura;
+import com.illuminati.ebs.entity.Ingrediente;
 import com.illuminati.ebs.entity.Pedido;
 import com.illuminati.ebs.entity.Producto;
 import com.illuminati.ebs.exception.ServiceException;
@@ -15,5 +16,7 @@ public interface PedidoService extends GenericService<Pedido, Long>{
     public Optional<PedidoDto> getPedidoCompletoById(Long pedidoId);
     List<Pedido> findPedidosByEstado(String estadoPedido);
     public void cancelarPedido(Pedido pedido) throws Exception;
+
+    public void aumentarStockIngrediente(List<Ingrediente> ingredientes) throws Exception;
 
 }

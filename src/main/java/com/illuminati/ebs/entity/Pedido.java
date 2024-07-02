@@ -29,6 +29,8 @@ public class Pedido extends  Base{
     @Column(name = "fecha_pedido")
     private Date fechaPedido;
 
+    private Boolean devuelto;
+
     @Transient
     private Double total = 0.0;
 
